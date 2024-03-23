@@ -1,0 +1,88 @@
+# nfpm (See https://nfpm.goreleaser.com/configuration)
+# yaml-language-server: $schema=https://nfpm.goreleaser.com/static/schema.json
+
+name: pam-oauth-client
+arch: ${GOARCH}
+platform: ${GOOS}
+version: ${VERSION}
+version_schema: semver
+epoch: '1'
+section: contrib/admin
+priority: optional
+maintainer: Wakeful Cloud <https://wakefulcloud.dev>
+description: PAM OAuth client
+vendor: Wakeful Cloud
+homepage: https://github.com/wakeful-cloud/pam-oauth
+license: MIT
+contents:
+  # NSS module shared library
+  - src: ./dist/lib/libnss_oauth.so
+    dst: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so.2
+    expand: true
+    file_info:
+      group: root
+      owner: root
+      mode: 0755
+
+  # NSS module shared library symlink
+  - src: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so.2
+    dst: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so
+    expand: true
+    type: symlink
+    file_info:
+      group: root
+      owner: root
+      mode: 0755
+
+  # PAM module shared library
+  - src: ./dist/lib/pam_oauth.so
+    dst: /usr/lib/${MULTIARCH_TRIPLET}/security/pam_oauth.so
+    expand: true
+    file_info:
+      group: root
+      owner: root
+      mode: 0755
+
+  # Client binary
+  - src: ./dist/bin/pam-oauth-client
+    dst: /usr/bin/pam-oauth-client
+    file_info:
+      group: root
+      owner: root
+      mode: 0755
+
+  # Login shell binary
+  - src: ./dist/bin/pam-oauth-login
+    dst: /usr/bin/pam-oauth-login
+    file_info:
+      group: root
+      owner: root
+      mode: 06755
+
+  # Client configuration
+  - dst: /etc/pam-oauth/client.toml
+    type: ghost
+    file_info:
+      group: root
+      owner: root
+      mode: 0600
+
+  # Man pages
+  - src: ./dist/man/{pam-oauth-client,pam-oauth-login}*.gz
+    dst: /usr/share/man/man1/
+    file_info:
+      group: root
+      owner: root
+      mode: 0644
+# rpm:
+#   signature:
+#     key_file: ${SIGNING_KEY_FILE}
+#     key_id: ${SIGNING_KEY_ID}
+deb:
+  # signature:
+  #   method: debsign
+  #   type: origin
+  #   key_file: ${SIGNING_KEY_FILE}
+  #   key_id: ${SIGNING_KEY_ID}
+  fields:
+    Bugs: https://github.com/wakeful-cloud/pam-oauth/issues

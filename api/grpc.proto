@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option go_package = "./internal/api";
+
+// Authentication service
+service AuthService {
+  // Issue a challenge for the user to verify its identity
+  rpc IssueChallenge (IssueChallengeRequest) returns (IssueChallengeResponse);
+
+  // Verify a challenge
+  rpc VerifyChallenge (VerifyChallengeRequest) returns (VerifyChallengeResponse);
+
+  // Get challenge information
+  rpc GetChallengeInfo (GetChallengeInfoRequest) returns (GetChallengeInfoResponse);
+}
+
+// Request message for IssueChallenge method
+message IssueChallengeRequest {
+  // Username of the user the challenge is being issued for
+  string username = 1;
+}
+
+// Response message for IssueChallenge method
+message IssueChallengeResponse {
+  // Arbitrary identifier for the challenge
+  string id = 1;
+
+  // The challenge URL
+  string url = 2;
+}
+
+// Request message for VerifyChallenge method
+message VerifyChallengeRequest {
+  // Identifier of the challenge to verify
+  string id = 1;
+
+  // Verification code sent to the user after completing the OAuth flow to verify the user
+  // attempting to login via the PAM module is the same user that completed the OAuth flow
+  string verificationCode = 2;
+}
+
+// Response message for VerifyChallenge method
+message VerifyChallengeResponse {
+  // Whether the challenge was verified successfully
+  bool verified = 1;
+}
+
+// Request message for GetChallengeInfo method
+message GetChallengeInfoRequest {
+  // Identifier of the challenge to get info for
+  string id = 1;
+}
+
+// Response message for GetChallengeInfo method
+message GetChallengeInfoResponse {
+  // Environment variables for the challenge
+  map<string, string> env = 1;
+
+  // Username of the user the challenge is for
+  string username = 2;
+}

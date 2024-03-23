@@ -1,0 +1,60 @@
+# nfpm (See https://nfpm.goreleaser.com/configuration)
+# yaml-language-server: $schema=https://nfpm.goreleaser.com/static/schema.json
+
+name: pam-oauth-server
+arch: ${GOARCH}
+platform: ${GOOS}
+version: ${VERSION}
+version_schema: semver
+epoch: '1'
+section: contrib/admin
+priority: optional
+maintainer: Wakeful Cloud <https://wakefulcloud.dev>
+description: PAM OAuth server
+vendor: Wakeful Cloud
+homepage: https://github.com/wakeful-cloud/pam-oauth
+license: MIT
+contents:
+  # Server binary
+  - src: ./dist/bin/pam-oauth-server
+    dst: /usr/bin/pam-oauth-server
+    file_info:
+      group: root
+      owner: root
+      mode: 0755
+  
+  # Server configuration
+  - dst: /etc/pam-oauth/server.toml
+    type: ghost
+    file_info:
+      group: root
+      owner: root
+      mode: 0600
+    
+  # Systemd service
+  - src: ./init/pam-oauth-server.service
+    dst: /lib/systemd/system/pam-oauth-server.service
+    file_info:
+      group: root
+      owner: root
+      mode: 0644
+
+  # Man pages
+  - src: ./dist/man/pam-oauth-server*.gz
+    dst: /usr/share/man/man1/
+    file_info:
+      group: root
+      owner: root
+      mode: 0644
+# rpm:
+#   signature:
+#     key_file: ${SIGNING_KEY_FILE}
+#     key_id: ${SIGNING_KEY_ID}
+deb:
+  # signature:
+  #   method: debsign
+  #   type: origin
+  #   key_file: ${SIGNING_KEY_FILE}
+  #   key_id: ${SIGNING_KEY_ID}
+  fields:
+    Bugs: https://github.com/wakeful-cloud/pam-oauth/issues

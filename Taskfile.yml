@@ -1,0 +1,171 @@
+# Taskfile (See https://taskfile.dev)
+
+version: '3'
+
+vars:
+  # The project version
+  VERSION: '0.0.0'
+
+  # The current short Git commit hash
+  COMMIT:
+    sh: git rev-parse --short HEAD
+
+  # The current Git branch
+  BRANCH:
+    sh: git rev-parse --abbrev-ref HEAD
+
+  # The current timestamp
+  TIMESTAMP:
+    sh: date --iso-8601=seconds --utc
+
+  # Go build OS
+  GOOS:
+    sh: go env GOOS
+
+  # Go build architecture
+  GOARCH:
+    sh: go env GOARCH
+
+  # Go build flags
+  GO_BUILD_FLAGS: -ldflags "-X 'github.com/wakeful-cloud/pam-oauth/internal/common.rawVersion={{ .VERSION }}' -X 'github.com/wakeful-cloud/pam-oauth/internal/common.rawCommit={{ .COMMIT }}' -X 'github.com/wakeful-cloud/pam-oauth/internal/common.rawBranch={{ .BRANCH }}' -X 'github.com/wakeful-cloud/pam-oauth/internal/common.rawTimestamp={{ .TIMESTAMP }}'"
+
+  # Multiarch triplet
+  MULTIARCH_TRIPLET:
+    sh: gcc -dumpmachine
+
+env:
+  GOOS: '{{ .GOOS }}'
+  GOARCH: '{{ .GOARCH }}'
+  MULTIARCH_TRIPLET: '{{ .MULTIARCH_TRIPLET }}'
+
+tasks:
+  audit:
+    desc: Run security audits
+    cmds:
+      - gosec ./...
+    sources:
+      - ./**/*.go
+      - ./**/*.mod
+      - ./**/*.sum
+
+  build:nss:
+    desc: Build the NSS module
+    cmds:
+      - mkdir -p ./dist/lib
+      - gcc -Wall -Werror -fPIC -o ./dist/lib/libnss_oauth.o -c ./lib/nss.c
+      - gcc -shared -o ./dist/lib/libnss_oauth.so ./dist/lib/libnss_oauth.o
+      - rm -f ./dist/lib/libnss_oauth.o
+    sources:
+      - ./lib/nss.c
+    generates:
+      - ./dist/lib/libnss_oauth.so
+
+  build:pam:
+    desc: Build the PAM module
+    cmds:
+      - mkdir -p ./dist/lib
+      - gcc -Wall -Werror -fPIC -o ./dist/lib/pam_oauth.o -c ./lib/pam.c
+      - gcc -shared -o ./dist/lib/pam_oauth.so ./dist/lib/pam_oauth.o
+      - rm -f ./dist/lib/pam_oauth.o
+    sources:
+      - ./lib/pam.c
+    generates:
+      - ./dist/lib/pam_oauth.so
+
+  build:client:
+    desc: Build the client
+    cmds:
+      - go build {{ .GO_BUILD_FLAGS }} -o ./dist/bin/pam-oauth-client ./cmd/client
+    sources:
+      - ./**/*.go
+      - ./**/*.mod
+      - ./**/*.sum
+    generates:
+      - ./dist/bin/pam-oauth-client
+
+  build:login:
+    desc: Build the login shell
+    cmds:
+      - go build {{ .GO_BUILD_FLAGS }} -o ./dist/bin/pam-oauth-login ./cmd/login
+    sources:
+      - ./**/*.go
+      - ./**/*.mod
+      - ./**/*.sum
+    generates:
+      - ./dist/bin/pam-oauth-login
+
+  build:server:
+    desc: Build the server
+    cmds:
+      - go build {{ .GO_BUILD_FLAGS }} -o ./dist/bin/pam-oauth-server ./cmd/server
+    sources:
+      - ./**/*.go
+      - ./**/*.mod
+      - ./**/*.sum
+    generates:
+      - ./dist/bin/pam-oauth-server
+
+  build:man:
+    desc: Build the man pages
+    cmds:
+      - mkdir -p ./dist/man
+      - rm -rf ./dist/man
+      - go run -tags man ./cmd/client man --output ./dist/man
+      - go run -tags man ./cmd/login man --output ./dist/man
+      - go run -tags man ./cmd/server man --output ./dist/man
+      - gzip -r ./dist/man/*
+    sources:
+      - ./**/*.go
+      - ./**/*.mod
+      - ./**/*.sum
+    generates:
+      - ./dist/man/*
+
+  build:
+    desc: Build the project
+    deps:
+      - build:client
+      - build:login
+      - build:man
+      - build:nss
+      - build:pam
+      - build:server
+
+  package:
+    desc: Package the project
+    cmds:
+      - mkdir -p ./dist/pkg
+      - for:
+          - deb
+          - rpm
+          - apk
+          - archlinux
+        cmd: nfpm pkg --config build/nfpm-client.yml --packager {{ .ITEM }} --target ./dist/pkg/
+      - for:
+          - deb
+          - rpm
+          - apk
+          - archlinux
+        cmd: nfpm pkg --config build/nfpm-server.yml --packager {{ .ITEM }} --target ./dist/pkg/
+    env:
+      VERSION: '{{ .VERSION }}'
+      SIGNING_KEY_FILE: ./signing.key
+      SIGNING_KEY_ID: 0x00000000
+    deps:
+      - build
+
+  clean:
+    desc: Clean the project
+    cmds:
+      - rm -rf ./dist
+    sources: []
+
+  generate:grpc:
+    desc: Generate the gRPC code
+    cmds:
+      - protoc --go_out=. --go_opt=paths=import --go-grpc_out=. --go-grpc_opt=paths=import ./api/grpc.proto
+    sources:
+      - ./api/grpc.proto
+    generates:
+      - ./internal/api/grpc.pb.go
+      - ./internal/api/grpc_grpc.pb.go

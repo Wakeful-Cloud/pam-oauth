@@ -1,0 +1,89 @@
+package main
+
+import (
+	"os"
+	"path/filepath"
+
+	"github.com/drewstinnett/gout/v2"
+	"github.com/spf13/cobra"
+	"github.com/wakeful-cloud/pam-oauth/internal/common"
+	"github.com/wakeful-cloud/pam-oauth/internal/server"
+)
+
+// config is the global configuration
+var config server.Config
+
+// goutConfig is the global gout configuration
+var goutConfig = gout.NewCobraConfig()
+
+// Flags
+var configPath string
+var configDir string
+
+// rootCmd is the base command
+var rootCmd = &cobra.Command{
+	Use:          "pam-oauth-server",
+	Short:        "PAM OAuth server",
+	SilenceUsage: true,
+	CompletionOptions: cobra.CompletionOptions{
+		HiddenDefaultCmd: true,
+	},
+	Version: common.About,
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		// Make the config path absolute
+		if !filepath.IsAbs(configPath) {
+			var err error
+			configPath, err = filepath.Abs(configPath)
+
+			if err != nil {
+				return err
+			}
+
+		}
+
+		// Clean the config path
+		configPath = filepath.Clean(configPath)
+
+		// Get the config directory
+		configDir = filepath.Dir(configPath)
+
+		// Load the config
+		var err error
+		config, err = server.LoadConfig(configPath, configDir)
+
+		if err != nil {
+			return err
+		}
+
+		// Initialize gout
+		err = gout.WithCobra(cmd, goutConfig)
+
+		if err != nil {
+			return err
+		}
+
+		return nil
+	},
+}
+
+func init() {
+	// Register the flags
+	rootCmd.PersistentFlags().StringVar(&configPath, "config", "/etc/pam-oauth/server.toml", "config file")
+	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	// Bind gout
+	err := gout.BindCobra(rootCmd, goutConfig)
+
+	if err != nil {
+		panic(err)
+	}
+}
+
+func main() {
+	// Execute the root command
+	err := rootCmd.Execute()
+
+	if err != nil {
+		os.Exit(1)
+	}
+}

@@ -1,0 +1,27 @@
+# Run security audits
+name: security-audits
+on:
+  - push
+  - pull_request
+jobs:
+  # Audit all source code with Secure Go (https://securego.io)
+  secure-go:
+    name: Audit source code with Secure Go
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Install apt dependencies
+        run: sudo apt install -y libpam0g libpam0g-dev
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+
+      - name: Audit code
+        uses: securego/gosec@master
+        with:
+          args: ./...

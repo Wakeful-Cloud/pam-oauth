@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>PAM OAuth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../static/pico.min.css"
+    integrity="sha512-I0Koym6ieqOQ3qD5qo6cD6GbPUvGdpJI0ruRqMfYhJEmlCjHZq1a3ugbATi+5w8jfIM+AVgrjH4YP+cZDCXOhA==">
+
+  <style>
+    html,
+    body,
+    main {
+      height: 100%;
+      width: 100%;
+    }
+
+    main {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    article {
+      max-height: 100%;
+      max-width: 100%;
+    }
+
+    header {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container-fluid">
+    <article>
+      <header>
+        <h3>PAM OAuth</h3>
+      </header>
+      <p id="messageDisplay"></p>
+      <div role="group" id="verificationCodeGroup">
+        <input aria-label="Verification code" type="text" placeholder="Code" readonly id="verificationCodeInput" />
+        <button aria-label="Copy verification code" id="verificationCodeCopyButton">Copy</button>
+      </div>
+    </article>
+  </main>
+
+  <script>
+    // Data injected by the server
+    const message = "{{ .Message }}";
+    const code = "{{ .Code }}";
+
+    // Get elements
+    const messageDisplay = document.getElementById('messageDisplay');
+    const verificationCodeGroup = document.getElementById('verificationCodeGroup');
+    const verificationCodeInput = document.getElementById('verificationCodeInput');
+    const verificationCodeCopyButton = document.getElementById('verificationCodeCopyButton');
+
+    // Update the element states
+    messageDisplay.innerText = message;
+    verificationCodeInput.value = code;
+
+    if (code.length === 0)
+    {
+      verificationCodeGroup.style.display = 'none';
+    }
+
+    // Register event listeners
+    verificationCodeCopyButton.addEventListener('click', async () =>
+    {
+      // Copy the text
+      await navigator.clipboard.writeText(verificationCodeInput.value);
+
+      // Update the text
+      verificationCodeCopyButton.innerText = 'Copied';
+      setTimeout(() =>
+      {
+        verificationCodeCopyButton.innerText = 'Copy';
+      }, 1000);
+    });
+  </script>
+</body>
+
+</html>
