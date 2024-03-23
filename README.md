@@ -1,7 +1,7 @@
 # PAM OAuth Module
 
-[![Release Status](https://img.shields.io/github/actions/workflow/status/wakeful-cloud/pam-oauth/release.yml?label=Synchronization&style=flat-square)](https://github.com/wakeful-cloud/pam-oauth/actions/workflows/release.yml)
-[![Security Status](https://img.shields.io/github/actions/workflow/status/wakeful-cloud/pam-oauth/security.yml?label=Synchronization&style=flat-square)](https://github.com/wakeful-cloud/pam-oauth/actions/workflows/security.yml)
+[![Release Status](https://img.shields.io/github/actions/workflow/status/wakeful-cloud/pam-oauth/release.yml?label=Release&style=flat-square)](https://github.com/wakeful-cloud/pam-oauth/actions/workflows/release.yml)
+[![Security Status](https://img.shields.io/github/actions/workflow/status/wakeful-cloud/pam-oauth/security.yml?label=Security&style=flat-square)](https://github.com/wakeful-cloud/pam-oauth/actions/workflows/security.yml)
 
 A Pluggable Authentication Module (PAM) and optional Name Service Switch (NSS) for OAuth, with optional support for OpenID Connect (OIDC).
 
