@@ -41,10 +41,10 @@ func init() {
 	clientCmd.AddCommand(removeClientCmd)
 
 	// Register the flags
-	removeClientCmd.Flags().StringVar(&removeClientCommonName, "common-name", "", "Client common name")
+	removeClientCmd.Flags().StringVar(&removeClientCommonName, "client-common-name", "", "Client common name")
 
 	// Mark the flags as required
-	err := removeClientCmd.MarkFlagRequired("common-name")
+	err := removeClientCmd.MarkFlagRequired("client-common-name")
 
 	if err != nil {
 		panic(err)

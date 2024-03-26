@@ -70,12 +70,8 @@ github.com/russross/blackfriday/v2 v2.1.0 h1:JIOH55/0cWyOuilr9/qlrm0BSXldqnqwMsf
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/samber/lo v1.38.1 h1:j2XEAqXKb09Am4ebOg31SpvzUTTs6EN3VfgeLUhPdXM=
 github.com/samber/lo v1.38.1/go.mod h1:+m/ZKRl6ClXCE2Lgf3MsQlWfh4bn1bz6CXEOxnEXnEA=
-github.com/samber/slog-common v0.14.0 h1:g4TGALXmqogbJu3epRhjIWUJKSpgqB9VyN2OEnS8Wyg=
-github.com/samber/slog-common v0.14.0/go.mod h1:Qjrfhwk79XiCIhBj8+jTq1Cr0u9rlWbjawh3dWXzaHk=
 github.com/samber/slog-echo v1.12.1 h1:TgpA4luiqe2sa6SDsraM1hUcLAXF8ZofjXM0SzIJkJc=
 github.com/samber/slog-echo v1.12.1/go.mod h1:/f78pHjVxGrIlHlS5fzWiW+BxkWltQ+SWKk8LKMjAMQ=
-github.com/samber/slog-syslog/v2 v2.1.0 h1:90UFePPjsLK7RG2pdkLVG2fjpg5QTIi55uC1ngelq8M=
-github.com/samber/slog-syslog/v2 v2.1.0/go.mod h1:/1Y0U4qCKuN4/uj6adIOCszCWLMWMjLyVj91yP8bNvI=
 github.com/spf13/cobra v1.8.0 h1:7aJaZx1B85qltLMc546zn58BxxfZdR/W22ej9CFoEf0=
 github.com/spf13/cobra v1.8.0/go.mod h1:WXLWApfZ71AjXPya3WOlMsY9yMs7YeiHhFVlvLyhcho=
 github.com/spf13/pflag v1.0.5 h1:iy+VFUOCP1a+8yFto/drg2CJ5u0yRoB7fZw3DKv/JXA=

@@ -19,7 +19,7 @@ var listClientCmd = &cobra.Command{
 		// Print the clients
 		err := gout.Print(lo.Map(config.InternalServerConfig.ClientAllowList.GetEntries(), func(entry *x509.Certificate, _ int) map[string]any {
 			return map[string]any{
-				"common_name":         entry.Subject.CommonName,
+				"subject":             entry.Subject.String(),
 				"issuer":              entry.Issuer.String(),
 				"serial":              entry.SerialNumber.String(),
 				"signature":           hex.EncodeToString(entry.Signature),

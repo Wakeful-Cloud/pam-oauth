@@ -3,11 +3,8 @@ package common
 import (
 	"fmt"
 	"log/slog"
-	"log/syslog"
 	"os"
 	"runtime/debug"
-
-	slogsyslog "github.com/samber/slog-syslog/v2"
 )
 
 // LogLevel is the log level
@@ -26,7 +23,6 @@ const (
 	FILE   LogOutput = "file"
 	STDOUT LogOutput = "stdout"
 	STDERR LogOutput = "stderr"
-	SYSLOG LogOutput = "syslog"
 )
 
 // ParseLogLevel parses a log level
@@ -72,19 +68,6 @@ func InitLogger(rawLevel LogLevel, rawOutput LogOutput, rawFile string, relative
 		logger = slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
 			Level: level,
 		}))
-
-	case SYSLOG:
-		// Open the syslog
-		syslog, err := syslog.New(syslog.LOG_AUTH, "pam-oauth")
-
-		if err != nil {
-			return nil, err
-		}
-
-		logger = slog.New(slogsyslog.Option{
-			Level:  level,
-			Writer: syslog,
-		}.NewSyslogHandler())
 
 	default:
 		return nil, fmt.Errorf("invalid log output: %s", rawOutput)

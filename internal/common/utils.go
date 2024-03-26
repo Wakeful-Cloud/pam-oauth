@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime/debug"
 )
 
 // CHALLENGE_ID_LENGTH is the length of the challenge ID (in bytes)
@@ -20,16 +21,16 @@ const VERIFICATION_CODE_LENGTH = 6
 
 const (
 	// PROTECTED_FILE_MODE is the expected file mode for protected files
-	PROTECTED_FILE_MODE = 0600
+	PROTECTED_FILE_MODE = 0o600
 
 	// PROTECTED_FOLDER_MODE is the expected file mode for protected folders
-	PROTECTED_FOLDER_MODE = 0700
+	PROTECTED_FOLDER_MODE = 0o700
 
 	// OPEN_FILE_MODE is the default file mode for open files
-	OPEN_FILE_MODE = 0644
+	OPEN_FILE_MODE = 0o644
 
 	// OPEN_FOLDER_MODE is the default file mode for open folders
-	OPEN_FOLDER_MODE = 0755
+	OPEN_FOLDER_MODE = 0o755
 )
 
 // SafeOpenMode is the mode to open a file
@@ -119,7 +120,9 @@ func EnsureProtectedFile(name string, relative string) error {
 		return err
 	}
 
-	if stat.Mode()&PROTECTED_FILE_MODE != PROTECTED_FILE_MODE {
+	if stat.Mode()&0077 != 0 {
+		fmt.Fprintf(os.Stderr, "file at \"%s\" has invalid permissions, stack trace:\n%s\n", name, debug.Stack())
+
 		return fmt.Errorf("file at \"%s\" has invalid permissions", name)
 	}
 

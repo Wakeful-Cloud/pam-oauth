@@ -33,8 +33,8 @@ type InternalClientConfig struct {
 // LogConfig is the logging configuration
 type LogConfig struct {
 	File   string           `toml:"file" comment:"Log file (if output is file)" default:"/var/log/pam-oauth-client.log"`
-	Level  common.LogLevel  `toml:"level" comment:"Log level" default:"info"`
-	Output common.LogOutput `toml:"output" comment:"Log output" default:"stderr"`
+	Level  common.LogLevel  `toml:"level" comment:"Log level (One of debug, info, warn, or error)" default:"info"`
+	Output common.LogOutput `toml:"output" comment:"Log output (One of file, stdout, or stderr)" default:"stderr"`
 }
 
 // PromptConfig is the prompt configuration

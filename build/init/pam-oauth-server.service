@@ -1,0 +1,43 @@
+[Unit]
+Description=PAM OAuth server
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+
+# Copy config and files to a folder before running (Which effectively grants read-only access to root files; see https://github.com/systemd/systemd/issues/16060#issuecomment-964168566)
+DynamicUser=yes
+RuntimeDirectory=pam-oauth-server
+ExecStartPre=+cp -r /etc/pam-oauth/. /run/pam-oauth-server/
+ExecStartPre=+bash -c "chown -R $(stat -c %%u /run/pam-oauth-server) /run/pam-oauth-server"
+ExecStartPre=+chmod -R 400 /run/pam-oauth-server
+
+# Run the server
+ExecStart=/usr/bin/pam-oauth-server --config /run/pam-oauth-server/server.toml serve
+
+# Hardening (See https://www.opensourcerers.org/2022/04/25/optimizing-a-systemd-service-for-security/ and https://gist.github.com/ageis/f5595e59b1cddb1513d1b425a323db04)
+DevicePolicy=closed
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateTmp=yes
+PrivateUsers=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectHostname=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectSystem=strict
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+SecureBits=noroot-locked
+
+[Install]
+WantedBy=multi-user.target

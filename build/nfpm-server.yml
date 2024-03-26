@@ -32,7 +32,7 @@ contents:
       mode: 0600
     
   # Systemd service
-  - src: ./init/pam-oauth-server.service
+  - src: ./build/init/pam-oauth-server.service
     dst: /lib/systemd/system/pam-oauth-server.service
     file_info:
       group: root
@@ -46,6 +46,8 @@ contents:
       group: root
       owner: root
       mode: 0644
+scripts:
+  postinstall: ./build/scripts/postinstall-server.sh
 # rpm:
 #   signature:
 #     key_file: ${SIGNING_KEY_FILE}

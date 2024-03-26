@@ -13,13 +13,46 @@ A Pluggable Authentication Module (PAM) and optional Name Service Switch (NSS) f
 ### Setup
 
 1. Download the latest release from the [releases page](https://github.com/wakeful-cloud/pam-oauth/releases)
-2. Extract/install the client on the client machine and the server on the server machine
+2. Extract/install the client on the client machine and the server on the server machine, for example:
+
+```bash
+VERSION="X.Y.Z" # Get the latest semantic version (Without the "v" prefix!) from the releases page
+
+# Debian/Ubuntu
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-client_${VERSION}_amd64.deb
+sudo dpkg -i pam-oauth-client_${VERSION}_amd64.deb
+
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-server_${VERSION}_amd64.deb
+sudo dpkg -i pam-oauth-server_${VERSION}_amd64.deb
+
+# Red Hat/CentOS
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-client-${VERSION}-1.x86_64.rpm
+sudo rpm -i pam-oauth-client-${VERSION}-1.x86_64.rpm
+
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-server-${VERSION}-1.x86_64.rpm
+sudo rpm -i pam-oauth-server-${VERSION}-1.x86_64.rpm
+
+# Arch Linux
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-client-${VERSION}-1-x86_64.pkg.tar.zst
+sudo pacman -U pam-oauth-client-${VERSION}-1-x86_64.pkg.tar.zst
+
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-server-${VERSION}-1-x86_64.pkg.tar.zst
+sudo pacman -U pam-oauth-server-${VERSION}-1-x86_64.pkg.tar.zst
+
+# Alpine Linux
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-client_${VERSION}_x86_64.apk
+sudo apk add pam-oauth-client_${VERSION}_x86_64.apk
+
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-server_${VERSION}_x86_64.apk
+sudo apk add pam-oauth-server_${VERSION}_x86_64.apk
+```
+
 3. Initialize the server:
 
 ```bash
 # You will likely want to add the following flags so that clients can verify the server's TLS certificate in the future:
 # --server-common-name=hostname --server-dns-san=localhost --server-dns-san=<server hostname> --server-ip-san=127.0.0.1 --server-ip-san=::1 --server-ip-san=<server external IP>
-pam-oauth-server initialize
+sudo pam-oauth-server initialize
 ```
 
 4. Update the server configuration (e.g.: OAuth provider's details, listening address) in `/etc/pam-oauth/server.toml`
@@ -28,14 +61,14 @@ pam-oauth-server initialize
 
 ```bash
 # You will likely want to add the following flags so that the server can verify the client's TLS certificate in the future:
-# --dns-san=<client hostname> --ip-san=<client external IP>
-pam-oauth-server client add --common-name=test --client-cert=<path to client certificate> --client-key=<path to client key>
+# --client-dns-san=<client hostname> --client-ip-san=<client external IP>
+sudo pam-oauth-server client add --client-common-name=<client hostname> --client-cert=<path to client certificate> --client-key=<path to client key>
 ```
 
 6. Initialize the client:
 
 ```bash
-pam-oauth-client initialize
+sudo pam-oauth-client initialize
 ```
 
 7. Update the client configuration (e.g.: server's address) in `/etc/pam-oauth/client.toml`
@@ -44,16 +77,16 @@ pam-oauth-client initialize
 
 ```bash
 # If using systemd
-systemctl start pam-oauth-server
+sudo systemctl start pam-oauth-server
 
 # Or manually
-pam-oauth-server serve
+sudo pam-oauth-server serve
 ```
 
 9. Update the PAM configuration (e.g.: `/etc/pam.d/sshd`):
 
 ```diff
-+ auth sufficient /path/to/pam_oauth.so [/path to client binary] --config [path to client config TOML] authenticate
++ auth sufficient pam_oauth.so /usr/bin/pam-oauth-client --config /etc/pam-oauth/client.toml run
 
 # All other auth rules
 @include common-auth
@@ -66,8 +99,8 @@ _Note: the `sufficient` keyword means that if this module succeeds, the rest of 
 ```diff
 - passwd: files systemd
 - group: files systemd
-+ passwd: files systemd pam_oauth
-+ group: files systemd pam_oauth
++ passwd: files systemd oauth
++ group: files systemd oauth
 ```
 
 11. Update the SSH server configuration (e.g.: `/etc/ssh/sshd_config`):
@@ -82,7 +115,7 @@ _Note: the `sufficient` keyword means that if this module succeeds, the rest of 
 12. Restart the SSH server:
 
 ```bash
-systemctl restart sshd
+sudo systemctl restart sshd
 ```
 
 ### Client Configuration
@@ -357,7 +390,7 @@ task package
 4. Add the client:
 
 ```bash
-./dist/bin/pam-oauth-server --config ./dev/server.toml client add --common-name test --client-cert ./dev/internal-client.crt --client-key ./dev/internal-client.key
+./dist/bin/pam-oauth-server --config ./dev/server.toml client add --client-common-name test --client-cert ./dev/internal-client.crt --client-key ./dev/internal-client.key
 ```
 
 5. Initialize the client:

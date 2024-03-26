@@ -156,7 +156,7 @@
         "${workspaceFolder}/dev/server.toml",
         "client",
         "add",
-        "--common-name",
+        "--client-common-name",
         "test2",
         // "--client-cert",
         // "${workspaceFolder}/dev/internal-client.crt",
@@ -198,7 +198,7 @@
         "${workspaceFolder}/dev/server.toml",
         "client",
         "remove",
-        "--common-name",
+        "--client-common-name",
         "test"
       ]
     },

@@ -16,7 +16,6 @@ require (
 	github.com/pelletier/go-toml/v2 v2.1.1
 	github.com/samber/lo v1.38.1
 	github.com/samber/slog-echo v1.12.1
-	github.com/samber/slog-syslog/v2 v2.1.0
 	github.com/spf13/cobra v1.8.0
 	golang.org/x/crypto v0.19.0
 	golang.org/x/oauth2 v0.17.0
@@ -38,7 +37,6 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/samber/slog-common v0.14.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect

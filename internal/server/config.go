@@ -40,8 +40,8 @@ type InternalServerConfig struct {
 // LogConfig is the logging configuration
 type LogConfig struct {
 	File   string           `toml:"file" comment:"Log file (if output is file)" default:"/var/log/pam-oauth-server.log"`
-	Level  common.LogLevel  `toml:"level" comment:"Log level" default:"info"`
-	Output common.LogOutput `toml:"output" comment:"Log output" default:"stderr"`
+	Level  common.LogLevel  `toml:"level" comment:"Log level (One of debug, info, warn, or error)" default:"info"`
+	Output common.LogOutput `toml:"output" comment:"Log output (One of file, stdout, or stderr)" default:"stderr"`
 }
 
 // OAuthClientConfig is the OAuth client configuration
@@ -182,16 +182,20 @@ func LoadConfig(name string, relative string) (Config, error) {
 		return Config{}, err
 	}
 
-	err = common.EnsureProtectedFile(config.OAuthServer.ServerTlsCertPath, relative)
+	if config.OAuthServer.ServerTlsCertPath != "" {
+		err = common.EnsureProtectedFile(config.OAuthServer.ServerTlsCertPath, relative)
 
-	if err != nil {
-		return Config{}, err
+		if err != nil {
+			return Config{}, err
+		}
 	}
 
-	err = common.EnsureProtectedFile(config.OAuthServer.ServerTlsKeyPath, relative)
+	if config.OAuthServer.ServerTlsKeyPath != "" {
+		err = common.EnsureProtectedFile(config.OAuthServer.ServerTlsKeyPath, relative)
 
-	if err != nil {
-		return Config{}, err
+		if err != nil {
+			return Config{}, err
+		}
 	}
 
 	// Read files

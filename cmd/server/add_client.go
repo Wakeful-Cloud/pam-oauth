@@ -105,14 +105,14 @@ func init() {
 	clientCmd.AddCommand(addClientCmd)
 
 	// Register the flags
-	addClientCmd.Flags().StringVar(&addClientCommonName, "common-name", "", "Common Name (CN)")
-	addClientCmd.Flags().StringSliceVar(&addClientDnsSans, "dns-san", []string{}, "DNS Subject Alternative Name (SAN)")
-	addClientCmd.Flags().StringSliceVar(&addClientIpSans, "ip-san", []string{}, "IP Subject Alternative Name (SAN)")
+	addClientCmd.Flags().StringVar(&addClientCommonName, "client-common-name", "", "Client Common Name (CN)")
+	addClientCmd.Flags().StringSliceVar(&addClientDnsSans, "client-dns-san", []string{}, "Client DNS Subject Alternative Name (SAN)")
+	addClientCmd.Flags().StringSliceVar(&addClientIpSans, "client-ip-san", []string{}, "Client IP Subject Alternative Name (SAN)")
 	addClientCmd.Flags().StringVar(&addClientClientCertPath, "client-cert", "stdout", "Client certificate path")
 	addClientCmd.Flags().StringVar(&addClientClientKeyPath, "client-key", "stdout", "Client key path")
 
 	// Mark the flags as required
-	err := addClientCmd.MarkFlagRequired("common-name")
+	err := addClientCmd.MarkFlagRequired("client-common-name")
 
 	if err != nil {
 		panic(err)

@@ -60,7 +60,7 @@ func init() {
 	// Register the flags
 	initializeCmd.Flags().BoolVar(&initializeOverwrite, "overwrite", false, "Overwrite existing files")
 	initializeCmd.Flags().BoolVar(&initializeConfig, "initialize-config", true, "Initialize the configuration")
-	initializeCmd.Flags().BoolVar(&initializeInternalServerPki, "initialize-internal-server-pki", true, "Initialize the internal server PKI")
+	initializeCmd.Flags().BoolVar(&initializeInternalServerPki, "initialize-server-pki", true, "Initialize the internal server PKI")
 	initializeCmd.Flags().StringVar(&initializeServerCommonName, "server-common-name", "localhost", "Internal server common name")
 	initializeCmd.Flags().StringSliceVar(&initializeServerDnsSans, "server-dns-san", []string{"localhost"}, "Internal server DNS Subject Alternative Name (SAN)")
 	initializeCmd.Flags().StringSliceVar(&initializeServerIpSans, "server-ip-san", []string{"127.0.0.1", "::1"}, "Internal server IP Subject Alternative Name (SAN)")

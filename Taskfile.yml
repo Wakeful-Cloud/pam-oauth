@@ -4,7 +4,7 @@ version: '3'
 
 vars:
   # The project version
-  VERSION: '0.0.0'
+  VERSION: '0.0.1'
 
   # The current short Git commit hash
   COMMIT:

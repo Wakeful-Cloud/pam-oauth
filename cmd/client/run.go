@@ -32,6 +32,17 @@ var runCmd = &cobra.Command{
 		defer cleanup()
 
 		// Get information from the environment
+		smType, err := client.GetType()
+
+		if err != nil {
+			// Log
+			slog.Error("failed to get type",
+				slog.Any("error", err),
+			)
+
+			return err
+		}
+
 		username, err := client.GetUsername()
 
 		if err != nil {
@@ -41,6 +52,16 @@ var runCmd = &cobra.Command{
 			)
 
 			return err
+		}
+
+		// Skip non-authentication requests
+		if smType != client.PAM_SM_AUTHENTICATE {
+			// Log
+			slog.Info("skipping non-authentication request",
+				slog.String("type", string(smType)),
+			)
+
+			return errSkipMethod
 		}
 
 		// Initialize the client
