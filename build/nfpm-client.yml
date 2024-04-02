@@ -22,7 +22,7 @@ contents:
     file_info:
       group: root
       owner: root
-      mode: 0755
+      mode: 0644
 
   # NSS module shared library symlink
   - src: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so.2
@@ -32,7 +32,7 @@ contents:
     file_info:
       group: root
       owner: root
-      mode: 0755
+      mode: 0644
 
   # PAM module shared library
   - src: ./dist/lib/pam_oauth.so
@@ -41,7 +41,7 @@ contents:
     file_info:
       group: root
       owner: root
-      mode: 0755
+      mode: 0644
 
   # Client binary
   - src: ./dist/bin/pam-oauth-client
