@@ -5,7 +5,6 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"net"
 	"os"
 
 	"github.com/hashicorp/go-version"
@@ -16,7 +15,7 @@ import (
 
 // InternalClientConfig is the internal server client configuration
 type InternalClientConfig struct {
-	Address           string `toml:"address" comment:"The address of the internal server" default:"127.0.0.1"`
+	Host              string `toml:"host" comment:"The host (address/domain) of the internal server" default:"127.0.0.1"`
 	Port              uint16 `toml:"port" comment:"The port of the internal server" default:"8081"`
 	ClientTlsCertPath string `toml:"client_cert" comment:"The path to the client TLS certificate file" default:"./internal-client.crt"`
 	ClientTlsKeyPath  string `toml:"client_key" comment:"The path to the client TLS key file" default:"./internal-client.key"`
@@ -39,7 +38,7 @@ type LogConfig struct {
 
 // PromptConfig is the prompt configuration
 type PromptConfig struct {
-	Message string `toml:"message" comment:"The Go template representing the message to display to the user to make them authenticate (See the README.md for documentation)" default:"Please open {{ .Url }} in your browser to authenticate and enter the code you receive here: "`
+	Message string `toml:"message" comment:"The Go template representing the message to display to the user to make them authenticate (See the README.md for documentation)" default:"Please open {{ .Url }} in your browser to authenticate and enter the code you receive here or press enter without a code to skip this authentication method: "`
 }
 
 // Config is the global client configuration
@@ -100,11 +99,6 @@ func LoadConfig(name string, relative string) (Config, error) {
 	}
 
 	// Validate the configuration
-	parsedAddress := net.ParseIP(config.InternalClientConfig.Address)
-	if len(parsedAddress) == 0 {
-		return Config{}, fmt.Errorf("invalid address \"%s\"", config.InternalClientConfig.Address)
-	}
-
 	if config.InternalClientConfig.Port == 0 {
 		return Config{}, errors.New("invalid port 0")
 	}

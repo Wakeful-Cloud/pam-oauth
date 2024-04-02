@@ -37,6 +37,11 @@ var initializeCmd = &cobra.Command{
 
 		// Initialize the internal server PKI1
 		if initializeInternalServerPki {
+			// Add the server common name to the DNS SANs if not already present
+			if !lo.Contains(initializeServerDnsSans, initializeServerCommonName) {
+				initializeServerDnsSans = append(initializeServerDnsSans, initializeServerCommonName)
+			}
+
 			// Parse IP SANs
 			ipSans := lo.Map(initializeServerIpSans, func(ip string, _ int) net.IP {
 				return net.ParseIP(ip)
@@ -62,6 +67,6 @@ func init() {
 	initializeCmd.Flags().BoolVar(&initializeConfig, "initialize-config", true, "Initialize the configuration")
 	initializeCmd.Flags().BoolVar(&initializeInternalServerPki, "initialize-server-pki", true, "Initialize the internal server PKI")
 	initializeCmd.Flags().StringVar(&initializeServerCommonName, "server-common-name", "localhost", "Internal server common name")
-	initializeCmd.Flags().StringSliceVar(&initializeServerDnsSans, "server-dns-san", []string{"localhost"}, "Internal server DNS Subject Alternative Name (SAN)")
+	initializeCmd.Flags().StringSliceVar(&initializeServerDnsSans, "server-dns-san", []string{"localhost"}, "Internal server DNS Subject Alternative Name (SAN) (Note that the common name is automatically added to the DNS SANs)")
 	initializeCmd.Flags().StringSliceVar(&initializeServerIpSans, "server-ip-san", []string{"127.0.0.1", "::1"}, "Internal server IP Subject Alternative Name (SAN)")
 }

@@ -29,6 +29,11 @@ var addClientCmd = &cobra.Command{
 			return errors.New("internal server TLS certificate is required")
 		}
 
+		// Add the client common name to the DNS SANs if not already present
+		if !lo.Contains(addClientDnsSans, addClientCommonName) {
+			addClientDnsSans = append(addClientDnsSans, addClientCommonName)
+		}
+
 		// Parse IP SANs
 		ipSans := lo.Map(addClientIpSans, func(ip string, _ int) net.IP {
 			return net.ParseIP(ip)
@@ -106,7 +111,7 @@ func init() {
 
 	// Register the flags
 	addClientCmd.Flags().StringVar(&addClientCommonName, "client-common-name", "", "Client Common Name (CN)")
-	addClientCmd.Flags().StringSliceVar(&addClientDnsSans, "client-dns-san", []string{}, "Client DNS Subject Alternative Name (SAN)")
+	addClientCmd.Flags().StringSliceVar(&addClientDnsSans, "client-dns-san", []string{}, "Client DNS Subject Alternative Name (SAN) (Note that the common name is automatically added to the DNS SANs)")
 	addClientCmd.Flags().StringSliceVar(&addClientIpSans, "client-ip-san", []string{}, "Client IP Subject Alternative Name (SAN)")
 	addClientCmd.Flags().StringVar(&addClientClientCertPath, "client-cert", "stdout", "Client certificate path")
 	addClientCmd.Flags().StringVar(&addClientClientKeyPath, "client-key", "stdout", "Client key path")

@@ -44,7 +44,7 @@ func NewInternalClient(config InternalClientConfig) (*InternalClient, error) {
 
 	// Log
 	slog.Info("initializing internal server client",
-		slog.String("server address", config.Address),
+		slog.String("server host", config.Host),
 		slog.Int("server port", int(config.Port)),
 		slog.String("client tls cert path", config.ClientTlsCertPath),
 		slog.String("client tls key path", config.ClientTlsKeyPath),
@@ -65,7 +65,7 @@ func NewInternalClient(config InternalClientConfig) (*InternalClient, error) {
 	}
 
 	conn, err := grpc.DialContext(ctx,
-		fmt.Sprintf("%s:%d", config.Address, config.Port),
+		fmt.Sprintf("%s:%d", config.Host, config.Port),
 		grpc.FailOnNonTempDialError(true),
 		grpc.WithBlock(),
 		grpc.WithIdleTimeout(10*time.Second),

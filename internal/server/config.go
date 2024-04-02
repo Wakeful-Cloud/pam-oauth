@@ -5,7 +5,6 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"net"
 	"os"
 
 	"github.com/hashicorp/go-version"
@@ -126,11 +125,6 @@ func LoadConfig(name string, relative string) (Config, error) {
 	}
 
 	// Validate the configuration
-	parsedAddress := net.ParseIP(config.OAuthServer.Address)
-	if len(parsedAddress) == 0 {
-		return Config{}, fmt.Errorf("invalid address \"%s\"", config.OAuthServer.Address)
-	}
-
 	if config.OAuthServer.Port == 0 {
 		return Config{}, errors.New("invalid port 0")
 	}

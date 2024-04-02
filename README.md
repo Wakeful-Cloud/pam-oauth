@@ -50,9 +50,8 @@ sudo apk add pam-oauth-server_${VERSION}_x86_64.apk
 3. Initialize the server:
 
 ```bash
-# You will likely want to add the following flags so that clients can verify the server's TLS certificate in the future:
-# --server-common-name=hostname --server-dns-san=localhost --server-dns-san=<server hostname> --server-ip-san=127.0.0.1 --server-ip-san=::1 --server-ip-san=<server external IP>
-sudo pam-oauth-server initialize
+# The localhost is so the client can be installed on the same machine as the server (Feel free to omit this if the client will never be installed on the same machine as the server)
+sudo pam-oauth-server initialize --server-common-name=<server hostname> --server-dns-san=<alternate server hostname> --server-dns-san=localhost --server-ip-san=127.0.0.1 --server-ip-san=::1 --server-ip-san=<alternate server IP>
 ```
 
 4. Update the server configuration (e.g.: OAuth provider's details, listening address) in `/etc/pam-oauth/server.toml`
@@ -60,9 +59,7 @@ sudo pam-oauth-server initialize
 5. Add a client:
 
 ```bash
-# You will likely want to add the following flags so that the server can verify the client's TLS certificate in the future:
-# --client-dns-san=<client hostname> --client-ip-san=<client external IP>
-sudo pam-oauth-server client add --client-common-name=<client hostname> --client-cert=<path to client certificate> --client-key=<path to client key>
+sudo pam-oauth-server client add --client-common-name=<client hostname> --client-dns-san=<alternate client hostname> --client-ip-san=<client IP> --client-cert=<path to save client certificate to> --client-key=<path to save client key to>
 ```
 
 6. Initialize the client:
