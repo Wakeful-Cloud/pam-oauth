@@ -32,10 +32,10 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and package for native
-        run: task clean && task package
+        run: task package
 
       - name: Build and package for ARM64
-        run: task clean && task package CC="aarch64-linux-gnu-gcc" GOARCH="arm64" GOOS="linux" MULTIARCH_TRIPLET="aarch64-linux-gnu"
+        run: task package CC="aarch64-linux-gnu-gcc" GOARCH="arm64" GOOS="linux" MULTIARCH_TRIPLET="aarch64-linux-gnu"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2

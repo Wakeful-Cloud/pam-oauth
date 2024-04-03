@@ -48,6 +48,7 @@ tasks:
 
   build:nss:
     desc: Build the NSS module
+    label: 'Build the NSS module ({{ list .CC | join "|" | sha256sum }})'
     cmds:
       - mkdir -p ./dist/lib
       - '{{ .CC }} -Wall -Werror -fPIC -o ./dist/lib/libnss_oauth.o -c ./lib/nss.c'
@@ -62,6 +63,7 @@ tasks:
 
   build:pam:
     desc: Build the PAM module
+    label: 'Build the PAM module ({{ list .CC | join "|" | sha256sum }})'
     cmds:
       - mkdir -p ./dist/lib
       - '{{ .CC }} -Wall -Werror -fPIC -o ./dist/lib/pam_oauth.o -c ./lib/pam.c'
@@ -76,6 +78,7 @@ tasks:
 
   build:client:
     desc: Build the client
+    label: 'Build the client ({{ list .CC .GOARCH .GOOS .GO_BUILD_FLAGS | join "|" | sha256sum }})'
     cmds:
       - go build {{ .GO_BUILD_FLAGS }} -o ./dist/bin/pam-oauth-client ./cmd/client
     env:
@@ -92,6 +95,7 @@ tasks:
 
   build:login:
     desc: Build the login shell
+    label: 'Build the login shell ({{ list .CC .GOARCH .GOOS .GO_BUILD_FLAGS | join "|" | sha256sum }})'
     cmds:
       - go build {{ .GO_BUILD_FLAGS }} -o ./dist/bin/pam-oauth-login ./cmd/login
     env:
@@ -108,6 +112,7 @@ tasks:
 
   build:server:
     desc: Build the server
+    label: 'Build the server ({{ list .CC .GOARCH .GOOS .GO_BUILD_FLAGS | join "|" | sha256sum }})'
     cmds:
       - go build {{ .GO_BUILD_FLAGS }} -o ./dist/bin/pam-oauth-server ./cmd/server
     env:
@@ -150,6 +155,7 @@ tasks:
 
   package:
     desc: Package the project
+    label: 'Package the project ({{ list .GOARCH .GOOS .MULTIARCH_TRIPLET .VERSION | join "|" | sha256sum }})'
     cmds:
       - mkdir -p ./dist/pkg
       - for:
