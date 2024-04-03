@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Install apt dependencies
-        run: sudo apt install -y libpam0g libpam0g-dev
+        run: sudo apt install -y libpam0g libpam0g-dev gcc-aarch64-linux-gnu
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,8 +31,11 @@ jobs:
           version: 3.x
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and package
-        run: task package
+      - name: Build and package for native
+        run: task clean && task package
+
+      - name: Build and package for ARM64
+        run: task clean && task package CC="aarch64-linux-gnu-gcc" GOARCH="arm64" GOOS="linux" MULTIARCH_TRIPLET="aarch64-linux-gnu"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2

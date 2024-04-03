@@ -18,33 +18,61 @@ A Pluggable Authentication Module (PAM) and optional Name Service Switch (NSS) f
 ```bash
 VERSION="X.Y.Z" # Get the latest semantic version (Without the "v" prefix!) from the releases page
 
-# Debian/Ubuntu
+# Debian/Ubuntu (x86-64/amd64)
 wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-client_${VERSION}_amd64.deb
 sudo dpkg -i pam-oauth-client_${VERSION}_amd64.deb
 
 wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-server_${VERSION}_amd64.deb
 sudo dpkg -i pam-oauth-server_${VERSION}_amd64.deb
 
-# Red Hat/CentOS
+# Debian/Ubuntu (arm64/aarch64)
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-client_${VERSION}_arm64.deb
+sudo dpkg -i pam-oauth-client_${VERSION}_arm64.deb
+
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-server_${VERSION}_arm64.deb
+sudo dpkg -i pam-oauth-server_${VERSION}_arm64.deb
+
+# Red Hat/CentOS (x86-64/amd64)
 wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-client-${VERSION}-1.x86_64.rpm
 sudo rpm -i pam-oauth-client-${VERSION}-1.x86_64.rpm
 
 wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-server-${VERSION}-1.x86_64.rpm
 sudo rpm -i pam-oauth-server-${VERSION}-1.x86_64.rpm
 
-# Arch Linux
+# Red Hat/CentOS (arm64/aarch64)
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-client-${VERSION}-1.aarch64.rpm
+sudo rpm -i pam-oauth-client-${VERSION}-1.aarch64.rpm
+
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-server-${VERSION}-1.aarch64.rpm
+sudo rpm -i pam-oauth-server-${VERSION}-1.aarch64.rpm
+
+# Arch Linux (x86-64/amd64)
 wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-client-${VERSION}-1-x86_64.pkg.tar.zst
 sudo pacman -U pam-oauth-client-${VERSION}-1-x86_64.pkg.tar.zst
 
 wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-server-${VERSION}-1-x86_64.pkg.tar.zst
 sudo pacman -U pam-oauth-server-${VERSION}-1-x86_64.pkg.tar.zst
 
-# Alpine Linux
+# Arch Linux (arm64/aarch64)
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-client-${VERSION}-1-aarch64.pkg.tar.zst
+sudo pacman -U pam-oauth-client-${VERSION}-1-aarch64.pkg.tar.zst
+
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-server-${VERSION}-1-aarch64.pkg.tar.zst
+sudo pacman -U pam-oauth-server-${VERSION}-1-aarch64.pkg.tar.zst
+
+# Alpine Linux (x86-64/amd64)
 wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-client_${VERSION}_x86_64.apk
 sudo apk add pam-oauth-client_${VERSION}_x86_64.apk
 
 wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-server_${VERSION}_x86_64.apk
 sudo apk add pam-oauth-server_${VERSION}_x86_64.apk
+
+# Alpine Linux (arm64/aarch64)
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-client_${VERSION}_aarch64.apk
+sudo apk add pam-oauth-client_${VERSION}_aarch64.apk
+
+wget -q https://github.com/Wakeful-Cloud/pam-oauth/releases/download/v${VERSION}/pam-oauth-server_${VERSION}_aarch64.apk
+sudo apk add pam-oauth-server_${VERSION}_aarch64.apk
 ```
 
 3. Initialize the server:
