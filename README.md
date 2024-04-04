@@ -355,6 +355,94 @@ let usernameOk = username in allowedUsers;
 
 _Note: this expression will only allow users with an email address from the `mail.example.com` subdomain to authenticate with PAM OAuth. Furthermore, users must connect using only the local part of their email address when using SSH (e.g.: `ssh username@mail.example.com`). If you allow multiple domains (instead of a single domain, as with the above), be careful to ensure that the `username` is unique across all domains (e.g.: suffix the username with some form of the domain name)._
 
+### Troublshooting
+
+#### Server fails to start
+
+##### Symptoms
+
+- The server fails to start
+
+##### Resolution
+
+1. Verify that the server is not already running:
+
+```bash
+sudo systemctl status pam-oauth-server
+```
+
+2. Check the server logs for errors:
+
+```bash
+sudo journalctl -u pam-oauth-server
+```
+
+3. Check the server configuration for misconfigurations (See the [setup instructions](#setup)):
+
+```bash
+sudo cat /etc/pam-oauth/server.toml
+```
+
+4. Manually start the server:
+
+```bash
+sudo pam-oauth-server serve
+```
+
+#### SSH login fails
+
+##### Symptoms
+
+- When connecting to a server configured with PAM OAuth, SSH never prompts the user to authenticate with PAM OAuth (i.e.: it reverts to other authentication methods, such as password or key-based authentication)
+
+##### Resolution
+
+1. Restart the SSH server:
+
+```bash
+sudo systemctl restart sshd
+```
+
+2. Check the SSH server logs for errors:
+
+```bash
+sudo journalctl -u ssh
+# Or
+sudo journalctl -u sshd
+```
+
+2. Check the PAM configuration for misconfigurations (See the [setup instructions](#setup)):
+
+```bash
+sudo cat /etc/pam.d/sshd
+```
+
+3. Check the NSS configuration for misconfigurations (See the [setup instructions](#setup)):
+
+```bash
+sudo cat /etc/nsswitch.conf
+```
+
+4. Check the SSH server configuration for misconfigurations (See the [setup instructions](#setup)):
+
+```bash
+sudo cat /etc/ssh/sshd_config
+```
+
+5. Check the PAM OAuth client configuration for misconfigurations (See the [setup instructions](#setup)):
+
+```bash
+sudo cat /etc/pam-oauth/client.toml
+```
+
+6. Manually run the PAM OAuth client:
+
+```bash
+sudo PAM_RHOST="localhost" PAM_RUSER="username" PAM_SERVICE="sshd" PAM_TTY="tty0" PAM_USER="username" PAM_TYPE="pam_sm_authenticate" pam-oauth-client run
+```
+
+*Note: replace `username` with the username of the user attempting to authenticate.*
+
 ### Development Setup
 
 1. Install the tools:
