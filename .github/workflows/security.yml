@@ -7,7 +7,7 @@ jobs:
   # Audit all source code with Secure Go (https://securego.io)
   secure-go:
     name: Audit source code with Secure Go
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     timeout-minutes: 10
     steps:
       - name: Install apt dependencies

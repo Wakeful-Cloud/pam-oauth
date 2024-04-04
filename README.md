@@ -10,6 +10,11 @@ A Pluggable Authentication Module (PAM) and optional Name Service Switch (NSS) f
 
 ## Documentation
 
+## Support
+
+* Linux (x86-64/amd64) with `glibc >= 2.31`
+* Linux (arm64/aarch64) with `glibc >= 2.31`
+
 ### Setup
 
 1. Download the latest release from the [releases page](https://github.com/wakeful-cloud/pam-oauth/releases)
@@ -89,6 +94,8 @@ sudo pam-oauth-server initialize --server-common-name=<server hostname> --server
 ```bash
 sudo pam-oauth-server client add --client-common-name=<client hostname> --client-dns-san=<alternate client hostname> --client-ip-san=<client IP> --client-cert=<path to save client certificate to> --client-key=<path to save client key to>
 ```
+
+*Note: if the server is already running, you'll need to restart it for the changes to take effect.*
 
 6. Initialize the client:
 
