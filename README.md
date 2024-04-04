@@ -138,8 +138,10 @@ _Note: the `sufficient` keyword means that if this module succeeds, the rest of 
 11. Update the SSH server configuration (e.g.: `/etc/ssh/sshd_config`):
 
 ```diff
+- ChallengeResponseAuthentication no
 - KbdInteractiveAuthentication no
 - UsePAM no
++ ChallengeResponseAuthentication yes
 + KbdInteractiveAuthentication yes
 + UsePAM yes
 ```
@@ -548,7 +550,7 @@ apt install -y libpam0g libpam0g-dev nano openssh-server openssl
 
 # Setup SSH
 cp /etc/ssh/sshd_config /etc/ssh/sshd_config.old
-sed -i -E -e 's/#?KbdInteractiveAuthentication no/KbdInteractiveAuthentication yes/' -e 's/#?UsePAM no/UsePAM yes/' -e 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+sed -i -E -e 's/#?ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/' -e '#?KbdInteractiveAuthentication no/KbdInteractiveAuthentication yes/' -e 's/#?UsePAM no/UsePAM yes/' -e 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 ssh-keygen -a 100 -t ed25519 -f /root/.ssh/id_ed25519 -N ""
 service ssh start && service ssh stop # Fix directory creation bug
 
