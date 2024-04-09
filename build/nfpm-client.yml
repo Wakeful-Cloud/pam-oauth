@@ -24,9 +24,27 @@ contents:
       owner: root
       mode: 0644
 
+  - src: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so.2
+    dst: /lib/${MULTIARCH_TRIPLET}/libnss_oauth.so.2
+    expand: true
+    type: symlink
+    file_info:
+      group: root
+      owner: root
+      mode: 0644
+
   # NSS module shared library symlink
   - src: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so.2
     dst: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so
+    expand: true
+    type: symlink
+    file_info:
+      group: root
+      owner: root
+      mode: 0644
+
+  - src: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so.2
+    dst: /lib/${MULTIARCH_TRIPLET}/libnss_oauth.so
     expand: true
     type: symlink
     file_info:
@@ -38,6 +56,15 @@ contents:
   - src: ./dist/lib/pam_oauth.so
     dst: /usr/lib/${MULTIARCH_TRIPLET}/security/pam_oauth.so
     expand: true
+    file_info:
+      group: root
+      owner: root
+      mode: 0644
+  
+  - src: /usr/lib/${MULTIARCH_TRIPLET}/security/pam_oauth.so
+    dst: /lib/${MULTIARCH_TRIPLET}/security/pam_oauth.so
+    expand: true
+    type: symlink
     file_info:
       group: root
       owner: root
