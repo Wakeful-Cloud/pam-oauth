@@ -4,7 +4,7 @@ go 1.21.3
 
 require (
 	github.com/coreos/go-oidc/v3 v3.9.0
-	github.com/drewstinnett/gout/v2 v2.1.2
+	github.com/drewstinnett/gout/v2 v2.3.0
 	github.com/erni27/imcache v1.2.0
 	github.com/expr-lang/expr v1.16.1
 	github.com/golang-jwt/jwt/v5 v5.2.0
@@ -31,7 +31,6 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/jszwec/csvutil v1.10.0 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
