@@ -14,7 +14,7 @@ require (
 	github.com/mcuadros/go-defaults v1.2.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/pelletier/go-toml/v2 v2.1.1
-	github.com/samber/lo v1.38.1
+	github.com/samber/lo v1.39.0
 	github.com/samber/slog-echo v1.12.1
 	github.com/spf13/cobra v1.8.0
 	golang.org/x/crypto v0.19.0
