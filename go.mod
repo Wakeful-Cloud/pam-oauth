@@ -1,9 +1,12 @@
 module github.com/wakeful-cloud/pam-oauth
 
-go 1.21.3
+go 1.21.6
+
+toolchain go1.21.9
 
 require (
 	github.com/coreos/go-oidc/v3 v3.10.0
+	github.com/drewstinnett/gout-cobra v0.2.0
 	github.com/drewstinnett/gout/v2 v2.3.0
 	github.com/erni27/imcache v1.2.0
 	github.com/expr-lang/expr v1.16.4

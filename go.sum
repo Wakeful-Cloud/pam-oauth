@@ -9,6 +9,8 @@ github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSs
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1VwoXQT9A3Wy9MM3WgvqSxFWenqJduM=
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/drewstinnett/gout-cobra v0.2.0 h1:XuwdNzdWPu9J+kmjWW1UbiVxs1VVfOtU84dqjXgwEr0=
+github.com/drewstinnett/gout-cobra v0.2.0/go.mod h1:QF/6pillDBoreybzbfCaeqqd0plt14KnaZy0sal1EXE=
 github.com/drewstinnett/gout/v2 v2.3.0 h1:rX2UM5tvhM75TXIc9KXQfuxOnLP3qV873T4MW2TUes4=
 github.com/drewstinnett/gout/v2 v2.3.0/go.mod h1:ZxTVGKOv9mxNxR3TULFD1C/8zV6E6EyIrDT2dahNPzQ=
 github.com/erni27/imcache v1.2.0 h1:EbHHhwzJPcAYK//cVDq0use9tep1z9/kenIQhMarGnk=

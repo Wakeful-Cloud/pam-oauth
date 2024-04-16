@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/drewstinnett/gout/v2"
+	goutbra "github.com/drewstinnett/gout-cobra"
 	"github.com/spf13/cobra"
 	"github.com/wakeful-cloud/pam-oauth/internal/common"
 	"github.com/wakeful-cloud/pam-oauth/internal/server"
@@ -12,9 +12,6 @@ import (
 
 // config is the global configuration
 var config server.Config
-
-// goutConfig is the global gout configuration
-var goutConfig = gout.NewCobraConfig()
 
 // Flags
 var configPath string
@@ -55,8 +52,8 @@ var rootCmd = &cobra.Command{
 			return err
 		}
 
-		// Initialize gout
-		err = gout.WithCobra(cmd, goutConfig)
+		// Initialize goutbra
+		err = goutbra.Cmd(cmd)
 
 		if err != nil {
 			return err
@@ -71,8 +68,8 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&configPath, "config", "/etc/pam-oauth/server.toml", "config file")
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	// Bind gout
-	err := gout.BindCobra(rootCmd, goutConfig)
+	// Bind goutbra
+	err := goutbra.Bind(rootCmd)
 
 	if err != nil {
 		panic(err)
