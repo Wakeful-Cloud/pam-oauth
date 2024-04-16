@@ -16,6 +16,7 @@ import (
 	"github.com/wakeful-cloud/pam-oauth/internal/api"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/peer"
 )
 
 // grpcInterceptorLogger is a gRPC interceptor logger
@@ -56,8 +57,8 @@ func InitInternalServer(config InternalServerConfig, challengeManager *Challenge
 			PreferServerCipherSuites: true,
 			ClientCAs:                rootCertpool,
 			VerifyPeerCertificate: func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error {
-				// Ensure the client certificate is in the allow list
-				if len(rawCerts) == 0 {
+				// Ensure the client provided a certificate
+				if len(verifiedChains) == 0 || len(verifiedChains[0]) == 0 {
 					return errors.New("no client certificate provided")
 				}
 
@@ -72,13 +73,15 @@ func InitInternalServer(config InternalServerConfig, challengeManager *Challenge
 				if !ok {
 					// Log the client certificate
 					slog.Error("client certificate does not match allow list entry",
-						slog.String("common name", clientCert.Subject.CommonName),
+						slog.String("subject", clientCert.Subject.String()),
 						slog.String("issuer", clientCert.Issuer.String()),
+						slog.Any("DNS SANs", clientCert.DNSNames),
+						slog.Any("IP SANs", clientCert.IPAddresses),
 						slog.String("serial number", clientCert.SerialNumber.String()),
-						slog.String("signature algorithm", clientCert.SignatureAlgorithm.String()),
 						slog.String("signature", hex.EncodeToString(clientCert.Signature)),
-						slog.String("valid from", clientCert.NotBefore.String()),
-						slog.String("valid to", clientCert.NotAfter.String()),
+						slog.String("signature algorithm", clientCert.SignatureAlgorithm.String()),
+						slog.Any("valid from", clientCert.NotBefore),
+						slog.Any("valid to", clientCert.NotAfter),
 						slog.Any("key usage", EncodeKeyUsage(clientCert.KeyUsage)),
 						slog.Any("ext key usage", EncodeExtKeyUsage(clientCert.ExtKeyUsage)),
 					)
@@ -141,10 +144,37 @@ type AuthService struct {
 	challengeManager *ChallengeManager
 }
 
+// getClientCertificate gets the client certificate from the context
+func (service *AuthService) getClientCertificate(ctx context.Context) (*x509.Certificate, error) {
+	// Get the peer
+	peer, ok := peer.FromContext(ctx)
+
+	if !ok {
+		return nil, errors.New("failed to get peer from context")
+	}
+
+	// Get the client TLS info
+	clientTlsInfo := peer.AuthInfo.(credentials.TLSInfo)
+
+	// Ensure the client provided a certificate
+	if len(clientTlsInfo.State.VerifiedChains) == 0 || len(clientTlsInfo.State.VerifiedChains[0]) == 0 {
+		return nil, errors.New("no client certificate provided")
+	}
+
+	return clientTlsInfo.State.VerifiedChains[0][0], nil
+}
+
 // IssueChallenge issues a challenge for the client to verify its identity
 func (service *AuthService) IssueChallenge(ctx context.Context, req *api.IssueChallengeRequest) (*api.IssueChallengeResponse, error) {
+	// Get the client TLS certificate
+	clientCert, err := service.getClientCertificate(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
 	// Issue a new challenge
-	id, url, err := service.challengeManager.Step1(req.Username)
+	id, url, err := service.challengeManager.Step1(req.Username, clientCert)
 
 	if err != nil {
 		return nil, err
@@ -158,8 +188,15 @@ func (service *AuthService) IssueChallenge(ctx context.Context, req *api.IssueCh
 
 // VerifyChallenge verifies a challenge
 func (service *AuthService) VerifyChallenge(ctx context.Context, req *api.VerifyChallengeRequest) (*api.VerifyChallengeResponse, error) {
+	// Get the client TLS certificate
+	clientCert, err := service.getClientCertificate(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
 	// Verify the challenge
-	verified, err := service.challengeManager.Step4(req.Id, req.VerificationCode)
+	verified, err := service.challengeManager.Step4(req.Id, req.VerificationCode, clientCert)
 
 	if err != nil {
 		return nil, err
@@ -172,8 +209,15 @@ func (service *AuthService) VerifyChallenge(ctx context.Context, req *api.Verify
 
 // GetChallengeInfo gets challenge environment variables
 func (service *AuthService) GetChallengeInfo(ctx context.Context, req *api.GetChallengeInfoRequest) (*api.GetChallengeInfoResponse, error) {
+	// Get the client TLS certificate
+	clientCert, err := service.getClientCertificate(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
 	// Get the usernamd and challenge environment variables
-	username, env, err := service.challengeManager.Step5(req.Id)
+	username, env, err := service.challengeManager.Step5(req.Id, clientCert)
 
 	if err != nil {
 		return nil, err

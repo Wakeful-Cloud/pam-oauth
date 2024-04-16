@@ -2,6 +2,8 @@ package server
 
 import (
 	context "context"
+	"crypto/x509"
+	"encoding/hex"
 	"errors"
 	"log/slog"
 	"net/url"
@@ -49,6 +51,9 @@ type challenge struct {
 
 	// The challenge environment variables
 	env map[string]string
+
+	// The client certificate
+	clientCert *x509.Certificate
 }
 
 // ChallengeManager is the global challenge manager
@@ -127,7 +132,7 @@ func NewChallengeManager(config Config) (*ChallengeManager, error) {
 }
 
 // Step1 issues a challenge for the user to verify its identity, returning the challenge ID and flow begin URL (Called by the gRPC server)
-func (challengeManager *ChallengeManager) Step1(username string) (string, string, error) {
+func (challengeManager *ChallengeManager) Step1(username string, clientCert *x509.Certificate) (string, string, error) {
 	// Generate the challenge ID
 	challengeId, err := generateRandomBase32(common.CHALLENGE_ID_LENGTH)
 
@@ -150,8 +155,9 @@ func (challengeManager *ChallengeManager) Step1(username string) (string, string
 
 	// Initialize a new challenge
 	challenge := challenge{
-		state:    challengeStateStep1,
-		username: username,
+		state:      challengeStateStep1,
+		username:   username,
+		clientCert: clientCert,
 	}
 	challengeManager.challenges.Set(challengeId, challenge, imcache.WithDefaultExpiration())
 
@@ -233,6 +239,19 @@ func (challengeManager *ChallengeManager) Step3(challengeId string, oauthCode st
 		OauthToken: callbackExpressionEnvOauthToken{
 			Expiry: token.Expiry,
 			Type:   token.TokenType,
+		},
+		ClientCert: callbackExpressionEnvClientCert{
+			Subject:            challenge.clientCert.Subject.String(),
+			Issuer:             challenge.clientCert.Issuer.String(),
+			DnsSans:            challenge.clientCert.DNSNames,
+			IpSans:             challenge.clientCert.IPAddresses,
+			SerialNumber:       challenge.clientCert.SerialNumber.String(),
+			Signature:          hex.EncodeToString(challenge.clientCert.Signature),
+			SignatureAlgorithm: challenge.clientCert.SignatureAlgorithm.String(),
+			ValidFrom:          challenge.clientCert.NotBefore,
+			ValidTo:            challenge.clientCert.NotAfter,
+			KeyUsage:           EncodeKeyUsage(challenge.clientCert.KeyUsage),
+			ExtKeyUsage:        EncodeExtKeyUsage(challenge.clientCert.ExtKeyUsage),
 		},
 	}
 
@@ -323,7 +342,7 @@ func (challengeManager *ChallengeManager) Step3(challengeId string, oauthCode st
 }
 
 // Step4 verifies the verification code for the specified challenge (Called by the gRPC server)
-func (challengeManager *ChallengeManager) Step4(challengeId string, verificationCode string) (bool, error) {
+func (challengeManager *ChallengeManager) Step4(challengeId string, verificationCode string, clientCert *x509.Certificate) (bool, error) {
 	// Get the challenge
 	challenge, ok := challengeManager.challenges.Get(challengeId)
 
@@ -334,6 +353,11 @@ func (challengeManager *ChallengeManager) Step4(challengeId string, verification
 	// Check that the challenge is in the correct state
 	if challenge.state != challengeStateStep3 {
 		return false, errors.New("invalid challenge state")
+	}
+
+	// Check that the client certificate matches the original client certificate
+	if !clientCert.Equal(challenge.clientCert) {
+		return false, errors.New("client certificate does not match original client certificate")
 	}
 
 	// Verify the code
@@ -368,7 +392,7 @@ func (challengeManager *ChallengeManager) Step4(challengeId string, verification
 }
 
 // Step5 returns the username and challenge environment variables for the specified challenge (Called by the gRPC server)
-func (challengeManager *ChallengeManager) Step5(challengeId string) (string, map[string]string, error) {
+func (challengeManager *ChallengeManager) Step5(challengeId string, clientCert *x509.Certificate) (string, map[string]string, error) {
 	// Get the challenge
 	challenge, ok := challengeManager.challenges.Get(challengeId)
 
@@ -379,6 +403,11 @@ func (challengeManager *ChallengeManager) Step5(challengeId string) (string, map
 	// Check that the challenge is in the correct state
 	if challenge.state != challengeStateStep4 {
 		return "", nil, errors.New("invalid challenge state")
+	}
+
+	// Check that the client certificate matches the original client certificate
+	if !clientCert.Equal(challenge.clientCert) {
+		return "", nil, errors.New("client certificate does not match original client certificate")
 	}
 
 	// Delete the challenge

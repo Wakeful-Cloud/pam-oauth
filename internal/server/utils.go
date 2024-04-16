@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"math"
 	"math/big"
+	"net"
 	"net/mail"
 	"net/url"
 	"regexp"
@@ -38,6 +39,21 @@ type callbackExpressionEnvIdtoken struct {
 	Subject         string         `expr:"subject"`         // The token subject
 }
 
+// callbackExpressionEnvClientCert is the callback expression environment client certificate
+type callbackExpressionEnvClientCert struct {
+	Subject            string    `expr:"subject"`            // The certificate subject
+	Issuer             string    `expr:"issuer"`             // The certificate issuer
+	DnsSans            []string  `expr:"dnsSans"`            // The certificate DNS Subject Alternative Names (SANs)
+	IpSans             []net.IP  `expr:"ipSans"`             // The certificate IP Subject Alternative Names (SANs)
+	SerialNumber       string    `expr:"serialNumber"`       // The certificate serial number
+	Signature          string    `expr:"signature"`          // The certificate signature
+	SignatureAlgorithm string    `expr:"signatureAlgorithm"` // The certificate signature algorithm
+	ValidFrom          time.Time `expr:"validFrom"`          // The certificate valid from time
+	ValidTo            time.Time `expr:"validTo"`            // The certificate valid to time
+	KeyUsage           []string  `expr:"keyUsage"`           // The certificate key usage
+	ExtKeyUsage        []string  `expr:"extKeyUsage"`        // The certificate extended key usage
+}
+
 // callbackExpressionEnv is the callback expression environment
 type callbackExpressionEnv struct {
 	Username     string                          `expr:"username"`     // The username of the user that initiated the challenge
@@ -45,6 +61,7 @@ type callbackExpressionEnv struct {
 	RefreshToken string                          `expr:"refreshToken"` // The raw refresh token
 	OauthToken   callbackExpressionEnvOauthToken `expr:"oauthToken"`   // The OAuth token
 	IdToken      callbackExpressionEnvIdtoken    `expr:"idToken"`      // The ID token
+	ClientCert   callbackExpressionEnvClientCert `expr:"clientCert"`   // The client certificate
 }
 
 // callbackExpressionResult is the callback expression result

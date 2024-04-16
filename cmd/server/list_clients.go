@@ -21,11 +21,13 @@ var listClientCmd = &cobra.Command{
 			return map[string]any{
 				"subject":             entry.Subject.String(),
 				"issuer":              entry.Issuer.String(),
-				"serial":              entry.SerialNumber.String(),
+				"dns_sans":            entry.DNSNames,
+				"ip_sans":             entry.IPAddresses,
+				"serial_number":       entry.SerialNumber.String(),
 				"signature":           hex.EncodeToString(entry.Signature),
 				"signature_algorithm": entry.SignatureAlgorithm.String(),
-				"valid_from":          entry.NotBefore.String(),
-				"valid_to":            entry.NotAfter.String(),
+				"valid_from":          entry.NotBefore,
+				"valid_to":            entry.NotAfter,
 				"key_usage":           server.EncodeKeyUsage(entry.KeyUsage),
 				"ext_key_usage":       server.EncodeExtKeyUsage(entry.ExtKeyUsage),
 			}

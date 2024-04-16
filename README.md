@@ -197,6 +197,19 @@ The following variables are passed to the callback expression:
   - `nonce: string`: the nonce of the token
   - `raw: string`: the raw token
   - `subject: string`: the subject of the token
+- `clientCert: struct`: the PAM OAuth client certificate
+  - `subject: string`: the subject of the certificate
+  - `issuer: string`: the issuer of the certificate
+  - `dnsSans: []string`: the DNS subject alternative names of the certificate
+  - `ipSans: []net.IP`: the IP subject alternative names of the certificate
+  - `serialNumber: string`: the serial number of the certificate
+  - `signature: string`: the hex-encoded signature of the certificate
+  - `signatureAlgorithm: string`: the signature algorithm of the certificate
+  - `validFrom: time.Time`: the time the certificate is valid from
+  - `validTo: time.Time`: the time the certificate is valid to
+  - `keyUsage: []string`: the key usages of the certificate
+  - `extKeyUsage: []string`: the extended key usages of the certificate
+
 
 ##### Return Values
 
