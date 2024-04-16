@@ -44,7 +44,7 @@ type PromptConfig struct {
 // Config is the global client configuration
 type Config struct {
 	Version              *version.Version     `toml:"version,omitempty" comment:"The configuration version (DO NOT CHANGE)"`
-	CreateUserCommand    string               `toml:"create_user_command" comment:"The Go template representing the command to run to create a user the first time they authenticate (See the README.md for documentation)" default:"useradd --create-home --user-group --shell /bin/bash $PAM_OAUTH_USERNAME"`
+	CreateUserCommand    string               `toml:"create_user_command" comment:"The command to run to create a user the first time they authenticate (See the README.md for documentation)" default:"useradd --create-home --user-group --shell /bin/bash $PAM_OAUTH_USERNAME"`
 	InternalClientConfig InternalClientConfig `toml:"internal_client" comment:"Internal server client configuration"`
 	Log                  LogConfig            `toml:"log" comment:"Logging configuration"`
 	Prompt               PromptConfig         `toml:"prompt" comment:"Prompt configuration"`
