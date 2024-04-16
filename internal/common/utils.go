@@ -24,13 +24,7 @@ const (
 	PROTECTED_FILE_MODE = 0o600
 
 	// PROTECTED_FOLDER_MODE is the expected file mode for protected folders
-	PROTECTED_FOLDER_MODE = 0o700
-
-	// OPEN_FILE_MODE is the default file mode for open files
-	OPEN_FILE_MODE = 0o644
-
-	// OPEN_FOLDER_MODE is the default file mode for open folders
-	OPEN_FOLDER_MODE = 0o755
+	PROTECTED_FOLDER_MODE = 0o755
 )
 
 // SafeOpenMode is the mode to open a file

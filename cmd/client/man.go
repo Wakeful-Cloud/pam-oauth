@@ -27,7 +27,7 @@ var manCmd = &cobra.Command{
 		}
 
 		// Make the parent directories
-		err = common.MakeDirs(outputDir, cwd, common.OPEN_FOLDER_MODE)
+		err = common.MakeDirs(outputDir, cwd, common.PROTECTED_FOLDER_MODE)
 
 		if err != nil {
 			return err
