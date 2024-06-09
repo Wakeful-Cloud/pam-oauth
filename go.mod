@@ -21,7 +21,7 @@ require (
 	github.com/samber/slog-echo v1.14.1
 	github.com/spf13/cobra v1.8.0
 	golang.org/x/crypto v0.22.0
-	golang.org/x/oauth2 v0.19.0
+	golang.org/x/oauth2 v0.20.0
 	google.golang.org/grpc v1.63.2
 	google.golang.org/protobuf v1.34.1
 	mvdan.cc/sh/v3 v3.8.0
