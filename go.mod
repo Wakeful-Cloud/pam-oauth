@@ -16,7 +16,7 @@ require (
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/mcuadros/go-defaults v1.2.0
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/pelletier/go-toml/v2 v2.2.1
+	github.com/pelletier/go-toml/v2 v2.2.2
 	github.com/samber/lo v1.39.0
 	github.com/samber/slog-echo v1.14.1
 	github.com/spf13/cobra v1.8.0
