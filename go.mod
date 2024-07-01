@@ -19,7 +19,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.1
 	github.com/samber/lo v1.39.0
 	github.com/samber/slog-echo v1.14.1
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 	golang.org/x/crypto v0.24.0
 	golang.org/x/oauth2 v0.21.0
 	google.golang.org/grpc v1.64.0
