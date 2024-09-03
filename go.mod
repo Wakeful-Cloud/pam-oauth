@@ -18,7 +18,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/pelletier/go-toml/v2 v2.2.3
 	github.com/samber/lo v1.46.0
-	github.com/samber/slog-echo v1.14.4
+	github.com/samber/slog-echo v1.14.6
 	github.com/spf13/cobra v1.8.1
 	golang.org/x/crypto v0.25.0
 	golang.org/x/oauth2 v0.21.0
