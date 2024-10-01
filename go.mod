@@ -7,7 +7,7 @@ require (
 	github.com/coreos/go-oidc/v3 v3.11.0
 	github.com/drewstinnett/gout-cobra v0.2.0
 	github.com/drewstinnett/gout/v2 v2.3.0
-	github.com/erni27/imcache v1.2.0
+	github.com/erni27/imcache v1.2.1
 	github.com/expr-lang/expr v1.16.9
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.1.0
