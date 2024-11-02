@@ -23,7 +23,7 @@ require (
 	golang.org/x/oauth2 v0.23.0
 	google.golang.org/grpc v1.67.1
 	google.golang.org/protobuf v1.35.1
-	mvdan.cc/sh/v3 v3.9.0
+	mvdan.cc/sh/v3 v3.10.0
 )
 
 require (
