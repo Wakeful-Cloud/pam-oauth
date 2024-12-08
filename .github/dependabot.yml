@@ -10,7 +10,7 @@ updates:
     schedule:
       interval: monthly
 
-  - package-ecosystem: gomod
+  - package-ecosystem: cargo
     directory: /
     schedule:
       interval: monthly
