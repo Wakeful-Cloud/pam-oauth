@@ -6,7 +6,7 @@ arch: ${GOARCH}
 platform: ${GOOS}
 version: ${VERSION}
 version_schema: semver
-epoch: '1'
+epoch: "1"
 section: contrib/admin
 priority: optional
 maintainer: Wakeful Cloud <https://wakefulcloud.dev>
@@ -17,15 +17,15 @@ license: MIT
 contents:
   # NSS module shared library
   - src: ./dist/lib/libnss_oauth.so
-    dst: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so.2
+    dst: /usr/lib/${LIB_MULTIARCH_TRIPLET}/libnss_oauth.so.2
     expand: true
     file_info:
       group: root
       owner: root
       mode: 0644
 
-  - src: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so.2
-    dst: /lib/${MULTIARCH_TRIPLET}/libnss_oauth.so.2
+  - src: /usr/lib/${LIB_MULTIARCH_TRIPLET}/libnss_oauth.so.2
+    dst: /lib/${LIB_MULTIARCH_TRIPLET}/libnss_oauth.so.2
     expand: true
     type: symlink
     file_info:
@@ -34,8 +34,8 @@ contents:
       mode: 0644
 
   # NSS module shared library symlink
-  - src: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so.2
-    dst: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so
+  - src: /usr/lib/${LIB_MULTIARCH_TRIPLET}/libnss_oauth.so.2
+    dst: /usr/lib/${LIB_MULTIARCH_TRIPLET}/libnss_oauth.so
     expand: true
     type: symlink
     file_info:
@@ -43,8 +43,8 @@ contents:
       owner: root
       mode: 0644
 
-  - src: /usr/lib/${MULTIARCH_TRIPLET}/libnss_oauth.so.2
-    dst: /lib/${MULTIARCH_TRIPLET}/libnss_oauth.so
+  - src: /usr/lib/${LIB_MULTIARCH_TRIPLET}/libnss_oauth.so.2
+    dst: /lib/${LIB_MULTIARCH_TRIPLET}/libnss_oauth.so
     expand: true
     type: symlink
     file_info:
@@ -54,15 +54,15 @@ contents:
 
   # PAM module shared library
   - src: ./dist/lib/pam_oauth.so
-    dst: /usr/lib/${MULTIARCH_TRIPLET}/security/pam_oauth.so
+    dst: /usr/lib/${LIB_MULTIARCH_TRIPLET}/security/pam_oauth.so
     expand: true
     file_info:
       group: root
       owner: root
       mode: 0644
-  
-  - src: /usr/lib/${MULTIARCH_TRIPLET}/security/pam_oauth.so
-    dst: /lib/${MULTIARCH_TRIPLET}/security/pam_oauth.so
+
+  - src: /usr/lib/${LIB_MULTIARCH_TRIPLET}/security/pam_oauth.so
+    dst: /lib/${LIB_MULTIARCH_TRIPLET}/security/pam_oauth.so
     expand: true
     type: symlink
     file_info:

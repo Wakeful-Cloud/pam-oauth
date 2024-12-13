@@ -1,0 +1,27 @@
+{
+  "extensions": {
+    "recommendations": [
+      "bierner.github-markdown-preview",
+      "esbenp.prettier-vscode",
+      "rust-lang.rust-analyzer",
+      "vadimcn.vscode-lldb"
+    ]
+  },
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "always",
+      "source.organizeImports": "always"
+    },
+    "[markdown]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+  }
+}
