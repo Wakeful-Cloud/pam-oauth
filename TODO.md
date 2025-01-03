@@ -3,4 +3,14 @@
 - https://github.com/clarkmcc/cel-rust
 - https://github.com/ramosbugs/openidconnect-rs
 - https://github.com/tokio-rs/axum
+- https://github.com/hyperium/tonic
+  - https://github.com/hyperium/tonic/blob/master/examples/helloworld-tutorial.md
+- https://github.com/jvdwrf/axum-tonic
 - https://github.com/anowell/pam-rs
+- https://github.com/csnewman/libnss-rs
+- https://github.com/SURFscz/pam-weblogin (SSH multiplexing)
+- https://doc.rust-lang.org/book/ch11-01-writing-tests.html
+- https://hoverbear.org/blog/rust-state-machine-pattern/
+- https://unix.stackexchange.com/questions/373110/reserving-a-range-of-anonymous-uids-etc-subuid
+- https://serverfault.com/questions/973557
+- https://diesel.rs/

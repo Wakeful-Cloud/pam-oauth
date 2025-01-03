@@ -1,23 +1,82 @@
 syntax = "proto3";
 
-option go_package = "./internal/api";
+package grpc;
 
-// Authentication service
-service AuthService {
-  // Issue a challenge for the user to verify its identity
-  rpc IssueChallenge (IssueChallengeRequest) returns (IssueChallengeResponse);
+import "google/protobuf/empty.proto";
 
-  // Verify a challenge
-  rpc VerifyChallenge (VerifyChallengeRequest) returns (VerifyChallengeResponse);
+// User
+message User {
+  // Username of the user
+  string username = 1;
 
-  // Get challenge information
-  rpc GetChallengeInfo (GetChallengeInfoRequest) returns (GetChallengeInfoResponse);
+  // Password hash of the user
+  string password = 2;
+
+  // UID of the user
+  uint32 uid = 3;
+
+  // GID of the user
+  uint32 gid = 4;
+
+  // GECOS of the user
+  string gecos = 5;
+
+  // Home directory of the user
+  string dir = 6;
+
+  // Login shell of the user
+  string shell = 7;
+
+  // Environment variables of the user
+  map<string, string> env = 8;
+}
+
+// List of users
+message Users {
+  // List of users
+  repeated User users = 1;
+}
+
+// Group
+message Group {
+  // Name of the group
+  string name = 1;
+
+  // Password hash of the group
+  string password = 2;
+
+  // GID of the group
+  uint32 gid = 3;
+
+  // List of usernames in the group
+  repeated string members = 4;
+}
+
+// List of groups
+message Groups {
+  // List of groups
+  repeated Group groups = 1;
 }
 
 // Request message for IssueChallenge method
 message IssueChallengeRequest {
-  // Username of the user the challenge is being issued for
+  // Username of the user the challenge is being issued for (PAM_USER)
   string username = 1;
+
+  // Username of the remote user attempting to login via the PAM module (PAM_RUSER)
+  string remoteUsername = 2;
+
+  // Remote host of the user attempting to login via the PAM module (PAM_RHOST)
+  string remoteHost = 3;
+}
+
+// Enum for the type of challenge
+enum ChallengeType {
+  // Challenge is a push notification (i.e., do not prompt the user for a verification code)
+  PUSH = 0;
+
+  // Challenge is a verification code (i.e., prompt the user for a verification code)
+  VERIFICATION_CODE = 1;
 }
 
 // Response message for IssueChallenge method
@@ -27,6 +86,9 @@ message IssueChallengeResponse {
 
   // The challenge URL
   string url = 2;
+
+  // The type of challenge
+  ChallengeType type = 3;
 }
 
 // Request message for VerifyChallenge method
@@ -34,9 +96,8 @@ message VerifyChallengeRequest {
   // Identifier of the challenge to verify
   string id = 1;
 
-  // Verification code sent to the user after completing the OAuth flow to verify the user
-  // attempting to login via the PAM module is the same user that completed the OAuth flow
-  string verificationCode = 2;
+  // Verification code if the challenge is a verification code challenge (Only required if the challenge is a verification code challenge)
+  optional string verificationCode = 2;
 }
 
 // Response message for VerifyChallenge method
@@ -45,17 +106,65 @@ message VerifyChallengeResponse {
   bool verified = 1;
 }
 
-// Request message for GetChallengeInfo method
-message GetChallengeInfoRequest {
-  // Identifier of the challenge to get info for
+// Request message for GetChallengeUser method
+message GetChallengeUserRequest {
+  // Identifier of the challenge to get the user for
   string id = 1;
 }
 
-// Response message for GetChallengeInfo method
-message GetChallengeInfoResponse {
-  // Environment variables for the challenge
-  map<string, string> env = 1;
+// Authentication service
+service AuthService {
+  // [PAM module -> server] Issue a challenge
+  rpc IssueChallenge (IssueChallengeRequest) returns (IssueChallengeResponse);
 
-  // Username of the user the challenge is for
-  string username = 2;
+  // [PAM module -> server] Verify a challenge (Can only be called once per challenge)
+  rpc VerifyChallenge (VerifyChallengeRequest) returns (VerifyChallengeResponse);
+
+  // [Login shell -> server] Get a user from a challenge (Can only be called once per challenge)
+  rpc GetChallengeUser (GetChallengeUserRequest) returns (User);
+}
+
+// Request message for GetUserByName method
+message GetUserByNameRequest {
+  // Username of the user to get
+  string username = 1;
+}
+
+// Request message for GetUserByUid method
+message GetUserByUidRequest {
+  // UID of the user to get
+  uint32 uid = 1;
+}
+
+// Request message for GetGroupByName method
+message GetGroupByNameRequest {
+  // Name of the group to get
+  string name = 1;
+}
+
+// Request message for GetGroupByGid method
+message GetGroupByGidRequest {
+  // GID of the group to get
+  uint32 gid = 1;
+}
+
+// Information service
+service InfoService {
+  // [NSS module -> server] Get a user by name
+  rpc GetUserByName (GetUserByNameRequest) returns (User);
+
+  // [NSS module -> server] Get a user by UID
+  rpc GetUserByUid (GetUserByUidRequest) returns (User);
+
+  // [NSS module -> server] Get users
+  rpc GetUsers (google.protobuf.Empty) returns (Users);
+
+  // [NSS module -> server] Get a group by name
+  rpc GetGroupByName (GetGroupByNameRequest) returns (Group);
+
+  // [NSS module -> server] Get a group by GID
+  rpc GetGroupByGid (GetGroupByGidRequest) returns (Group);
+
+  // [NSS module -> server] Get groups
+  rpc GetGroups (google.protobuf.Empty) returns (Groups);
 }

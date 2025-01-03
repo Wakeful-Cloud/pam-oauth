@@ -1,0 +1,23 @@
+[package]
+name = "pam-oauth-pam"
+version = "0.1.0"
+publish = false
+authors = ["Wakeful Cloud"]
+edition = "2021"
+description = "A Pluggable Authentication Module (PAM) and Name Service Switch (NSS) module for OAuth/OpenID Connect (OIDC)"
+repository = "https://github.com/Wakeful-Cloud/pam-oauth"
+license = "MIT"
+
+[lib]
+name = "pam_oauth"
+crate-type = ["cdylib"]
+
+[dependencies]
+clap = { version = "4.5.23", features = ["derive"] }
+pam-bindings = "0.1.1"
+prost = "0.13.4"
+serde = { version = "1.0.217", features = ["derive"] }
+tonic = "0.12.3"
+
+[build-dependencies]
+tonic-build = "0.12.3"

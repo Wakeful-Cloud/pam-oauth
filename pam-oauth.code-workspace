@@ -4,13 +4,30 @@
       "bierner.github-markdown-preview",
       "esbenp.prettier-vscode",
       "rust-lang.rust-analyzer",
-      "vadimcn.vscode-lldb"
+      "vadimcn.vscode-lldb",
+      "zxh404.vscode-proto3"
     ]
   },
   "folders": [
     {
       "name": "root",
       "path": "."
+    },
+    {
+      "name": "login",
+      "path": "crates/login"
+    },
+    {
+      "name": "nss",
+      "path": "crates/nss"
+    },
+    {
+      "name": "pam",
+      "path": "crates/pam"
+    },
+    {
+      "name": "server",
+      "path": "crates/server"
     }
   ],
   "settings": {

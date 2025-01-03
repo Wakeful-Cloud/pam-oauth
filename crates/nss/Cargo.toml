@@ -1,5 +1,5 @@
 [package]
-name = "pam-oauth-lib"
+name = "pam-oauth-nss"
 version = "0.1.0"
 publish = false
 authors = ["Wakeful Cloud"]
@@ -9,8 +9,11 @@ repository = "https://github.com/Wakeful-Cloud/pam-oauth"
 license = "MIT"
 
 [lib]
-name = "pam_oauth"
+name = "nss_oauth"
 crate-type = ["cdylib"]
 
 [dependencies]
+clap = { version = "4.5.23", features = ["derive"] }
 pam-bindings = "0.1.1"
+serde = { version = "1.0.217", features = ["derive"] }
+toml_edit = { version = "0.22.22", features = ["serde"] }

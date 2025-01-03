@@ -6,7 +6,7 @@ arch: ${GOARCH}
 platform: ${GOOS}
 version: ${VERSION}
 version_schema: semver
-epoch: '1'
+epoch: "1"
 section: contrib/admin
 priority: optional
 maintainer: Wakeful Cloud <https://wakefulcloud.dev>
@@ -22,7 +22,7 @@ contents:
       group: root
       owner: root
       mode: 0755
-  
+
   # Server configuration
   - dst: /etc/pam-oauth/server.toml
     type: ghost
@@ -30,9 +30,9 @@ contents:
       group: root
       owner: root
       mode: 0600
-    
+
   # Systemd service
-  - src: ./build/init/pam-oauth-server.service
+  - src: ./pkg/init/pam-oauth-server.service
     dst: /lib/systemd/system/pam-oauth-server.service
     file_info:
       group: root
@@ -47,7 +47,7 @@ contents:
       owner: root
       mode: 0644
 scripts:
-  postinstall: ./build/scripts/postinstall-server.sh
+  postinstall: ./pkg/scripts/postinstall-server.sh
 # rpm:
 #   signature:
 #     key_file: ${SIGNING_KEY_FILE}
