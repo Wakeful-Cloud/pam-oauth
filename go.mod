@@ -1,7 +1,7 @@
 module github.com/wakeful-cloud/pam-oauth
 
 go 1.21.6
-toolchain go1.22.5
+toolchain go1.23.6
 
 require (
 	github.com/coreos/go-oidc/v3 v3.12.0
@@ -20,7 +20,7 @@ require (
 	github.com/samber/slog-echo v1.14.8
 	github.com/spf13/cobra v1.9.1
 	golang.org/x/crypto v0.32.0
-	golang.org/x/oauth2 v0.24.0
+	golang.org/x/oauth2 v0.27.0
 	google.golang.org/grpc v1.70.0
 	google.golang.org/protobuf v1.36.5
 	mvdan.cc/sh/v3 v3.10.0
