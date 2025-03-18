@@ -12,8 +12,8 @@ github.com/drewstinnett/gout/v2 v2.3.0 h1:rX2UM5tvhM75TXIc9KXQfuxOnLP3qV873T4MW2
 github.com/drewstinnett/gout/v2 v2.3.0/go.mod h1:ZxTVGKOv9mxNxR3TULFD1C/8zV6E6EyIrDT2dahNPzQ=
 github.com/erni27/imcache v1.2.1 h1:hDPesOxGMO8tV+wAUVsC2KVPB3BPjXS2xP+PgdevbRc=
 github.com/erni27/imcache v1.2.1/go.mod h1:KNUCBr1U9nOFTyUEC9CsMKZE33NboYTPavsQsuEufoA=
-github.com/expr-lang/expr v1.16.9 h1:WUAzmR0JNI9JCiF0/ewwHB1gmcGw5wW7nWt8gc6PpCI=
-github.com/expr-lang/expr v1.16.9/go.mod h1:8/vRC7+7HBzESEqt5kKpYXxrxkr31SaO8r40VO/1IT4=
+github.com/expr-lang/expr v1.17.0 h1:+vpszOyzKLQXC9VF+wA8cVA0tlA984/Wabc/1hF9Whg=
+github.com/expr-lang/expr v1.17.0/go.mod h1:8/vRC7+7HBzESEqt5kKpYXxrxkr31SaO8r40VO/1IT4=
 github.com/go-jose/go-jose/v4 v4.0.5 h1:M6T8+mKZl/+fNNuFHvGIzDz7BTLQPIounk/b9dw3AaE=
 github.com/go-jose/go-jose/v4 v4.0.5/go.mod h1:s3P1lRrkT8igV8D9OjyL4WRyHvjB6a4JSllnOrmmBOA=
 github.com/go-logr/logr v1.4.2 h1:6pFjapn8bFcIbiKo3XT4j/BhANplGihG6tvd+8rYgrY=
