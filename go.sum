@@ -69,8 +69,8 @@ github.com/russross/blackfriday/v2 v2.1.0 h1:JIOH55/0cWyOuilr9/qlrm0BSXldqnqwMsf
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/samber/lo v1.49.1 h1:4BIFyVfuQSEpluc7Fua+j1NolZHiEHEpaSEKdsH0tew=
 github.com/samber/lo v1.49.1/go.mod h1:dO6KHFzUKXgP8LDhU0oI8d2hekjXnGOu0DB8Jecxd6o=
-github.com/samber/slog-echo v1.14.8 h1:R7RF2LWEepsKtC7i6A6o9peS3Rz5HO8+H8OD+8mPD1I=
-github.com/samber/slog-echo v1.14.8/go.mod h1:K21nbusPmai/MYm8PFactmZoFctkMmkeaTdXXyvhY1c=
+github.com/samber/slog-echo v1.16.1 h1:5Q5IUROkFqKcu/qJM/13AP1d3gd1RS+Q/4EvKQU1fuo=
+github.com/samber/slog-echo v1.16.1/go.mod h1:f+B3WR06saRXcaGRZ/I/UPCECDPqTUqadRIf7TmyRhI=
 github.com/spf13/cobra v1.9.1 h1:CXSaggrXdbHK9CF+8ywj8Amf7PBRmPCOJugH954Nnlo=
 github.com/spf13/cobra v1.9.1/go.mod h1:nDyEzZ8ogv936Cinf6g1RU9MRY64Ir93oCnqb9wxYW0=
 github.com/spf13/pflag v1.0.6 h1:jFzHGLGAlb3ruxLB8MhbI6A8+AQX/2eW4qeyNZXNp2o=
