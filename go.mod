@@ -1,6 +1,7 @@
 module github.com/wakeful-cloud/pam-oauth
 
-go 1.21.6
+go 1.23.0
+
 toolchain go1.24.1
 
 require (
@@ -21,7 +22,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	golang.org/x/crypto v0.36.0
 	golang.org/x/oauth2 v0.29.0
-	google.golang.org/grpc v1.71.1
+	google.golang.org/grpc v1.72.0
 	google.golang.org/protobuf v1.36.6
 	mvdan.cc/sh/v3 v3.10.0
 )
@@ -48,6 +49,6 @@ require (
 	golang.org/x/term v0.30.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
 	golang.org/x/time v0.8.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250115164207-1a7da9e5054f // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250218202821-56aae31c358a // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
