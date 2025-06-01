@@ -22,7 +22,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	golang.org/x/crypto v0.36.0
 	golang.org/x/oauth2 v0.29.0
-	google.golang.org/grpc v1.72.0
+	google.golang.org/grpc v1.72.2
 	google.golang.org/protobuf v1.36.6
 	mvdan.cc/sh/v3 v3.10.0
 )
