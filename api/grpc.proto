@@ -4,6 +4,40 @@ package grpc;
 
 import "google/protobuf/empty.proto";
 
+// Information service
+service InfoService {
+  // [NSS module -> server] Get a user by name
+  rpc GetUserByName (GetUserByNameRequest) returns (User);
+
+  // [NSS module -> server] Get a user by UID
+  rpc GetUserByUid (GetUserByUidRequest) returns (User);
+
+  // [NSS module -> server] Get users
+  rpc GetUsers (google.protobuf.Empty) returns (Users);
+
+  // [NSS module -> server] Get a group by name
+  rpc GetGroupByName (GetGroupByNameRequest) returns (Group);
+
+  // [NSS module -> server] Get a group by GID
+  rpc GetGroupByGid (GetGroupByGidRequest) returns (Group);
+
+  // [NSS module -> server] Get groups
+  rpc GetGroups (google.protobuf.Empty) returns (Groups);
+}
+
+
+// Authentication service
+service AuthService {
+  // [PAM module -> server] Issue a challenge
+  rpc IssueChallenge (IssueChallengeRequest) returns (IssueChallengeResponse);
+
+  // [PAM module -> server] Verify a challenge (Can only be called once per challenge)
+  rpc VerifyChallenge (VerifyChallengeRequest) returns (VerifyChallengeResponse);
+
+  // [Login shell -> server] Get a user from a challenge (Can only be called once per challenge)
+  rpc GetChallengeUser (GetChallengeUserRequest) returns (User);
+}
+
 // User
 message User {
   // Username of the user
@@ -112,18 +146,6 @@ message GetChallengeUserRequest {
   string id = 1;
 }
 
-// Authentication service
-service AuthService {
-  // [PAM module -> server] Issue a challenge
-  rpc IssueChallenge (IssueChallengeRequest) returns (IssueChallengeResponse);
-
-  // [PAM module -> server] Verify a challenge (Can only be called once per challenge)
-  rpc VerifyChallenge (VerifyChallengeRequest) returns (VerifyChallengeResponse);
-
-  // [Login shell -> server] Get a user from a challenge (Can only be called once per challenge)
-  rpc GetChallengeUser (GetChallengeUserRequest) returns (User);
-}
-
 // Request message for GetUserByName method
 message GetUserByNameRequest {
   // Username of the user to get
@@ -146,25 +168,4 @@ message GetGroupByNameRequest {
 message GetGroupByGidRequest {
   // GID of the group to get
   uint32 gid = 1;
-}
-
-// Information service
-service InfoService {
-  // [NSS module -> server] Get a user by name
-  rpc GetUserByName (GetUserByNameRequest) returns (User);
-
-  // [NSS module -> server] Get a user by UID
-  rpc GetUserByUid (GetUserByUidRequest) returns (User);
-
-  // [NSS module -> server] Get users
-  rpc GetUsers (google.protobuf.Empty) returns (Users);
-
-  // [NSS module -> server] Get a group by name
-  rpc GetGroupByName (GetGroupByNameRequest) returns (Group);
-
-  // [NSS module -> server] Get a group by GID
-  rpc GetGroupByGid (GetGroupByGidRequest) returns (Group);
-
-  // [NSS module -> server] Get groups
-  rpc GetGroups (google.protobuf.Empty) returns (Groups);
 }

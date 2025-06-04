@@ -1,3 +1,24 @@
 [workspace]
-members = ["crates/pam"]
+members = ["crates/pam-oauth-client-utils"]
 resolver = "2"
+
+[workspace.package]
+version = "1.0.0-alpha.0"
+publish = false
+authors = ["Wakeful Cloud"]
+edition = "2021"
+description = "A Pluggable Authentication Module (PAM) and Name Service Switch (NSS) module for OAuth/OpenID Connect (OIDC)"
+repository = "https://github.com/Wakeful-Cloud/pam-oauth"
+license = "MIT"
+
+[workspace.dependencies]
+clap = { version = "4.5.28", features = ["derive"] }
+insta = "1.43.1"
+prost = "0.13.5"
+regex = "1.11.1"
+rstest = "0.25.0"
+serde = { version = "1.0.219", features = ["derive"] }
+strum = "0.27.1"
+strum_macros = "0.27.1"
+tonic = "0.13.1"
+tonic-build = "0.13.1"

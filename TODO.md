@@ -14,3 +14,6 @@
 - https://unix.stackexchange.com/questions/373110/reserving-a-range-of-anonymous-uids-etc-subuid
 - https://serverfault.com/questions/973557
 - https://diesel.rs/
+- https://linux.die.net/man/5/pam.conf
+- https://linux.die.net/man/5/ssh_config
+- https://linux.die.net/man/5/nsswitch.conf

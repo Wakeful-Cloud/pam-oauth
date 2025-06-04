@@ -19,8 +19,7 @@ vars:
     sh: date --iso-8601=seconds --utc
 
   # Cargo target
-  CARGO_TARGET:
-    sh: rustup show active-toolchain | grep -Po "^[^-]+-\K\S+"
+  CARGO_TARGET: 
 
   # Cargo build profile
   CARGO_PROFILE: dev
@@ -34,16 +33,17 @@ tasks:
     desc: Build the project
     label: 'Build the project ({{ list .CARGO_TARGET .CARGO_PROFILE | join "|" | sha256sum }})'
     cmds:
-      - cargo build --target={{ .CARGO_TARGET }} --profile={{ .CARGO_PROFILE }}
+      - cargo build {{ if ne .CARGO_TARGET "" }}--target={{ .CARGO_TARGET }}{{ end }} --profile={{ .CARGO_PROFILE }}
     sources:
       - ./crates/**/*
     generates:
-      - target/**/*
+      - ./target/**/*
 
   link-lib:
-    desc: Link the PAM library for testing purposes
-    label: Link the PAM library ({{ .LIB_MULTIARCH_TRIPLET | sha256sum }})
+    desc: Link the PAM libraries for testing purposes
+    label: Link the PAM libraries ({{ .LIB_MULTIARCH_TRIPLET | sha256sum }})
     cmds:
+      # - sudo ln --force --symbolic "{{ joinPath .TASKFILE_DIR "target" .CARGO_TARGET .BUILD_DIR_NAME "libnss_oauth.so" }}" "/usr/lib/{{ .LIB_MULTIARCH_TRIPLET }}/libnss_oauth.so"
       - sudo ln --force --symbolic "{{ joinPath .TASKFILE_DIR "target" .CARGO_TARGET .BUILD_DIR_NAME "libpam_oauth.so" }}" "/usr/lib/{{ .LIB_MULTIARCH_TRIPLET }}/security/pam_oauth.so"
     vars:
       BUILD_DIR_NAME: |
@@ -93,12 +93,3 @@ tasks:
       - cargo clean
     sources:
       - target/**/*
-
-  generate:grpc:
-    desc: Generate the gRPC code
-    cmds:
-      - protoc --go_out=. --go_opt=paths=import --go-grpc_out=. --go-grpc_opt=paths=import ./api/grpc.proto
-    sources:
-      - ./api/grpc.proto
-    # generates:
-    #   - TODO

@@ -4,13 +4,18 @@ FROM mcr.microsoft.com/devcontainers/rust:latest
 WORKDIR /workspace
 
 # Install packages
-RUN DEBIAN_FRONTEND="noninteractive" apt update && apt install -y libpam0g libpam0g-dev nano openssh-server openssl pamtester protobuf-compiler sed
+RUN DEBIAN_FRONTEND="noninteractive" apt update && apt install -y gdb libpam0g libpam0g-dev nano openssh-server openssl pamtester protobuf-compiler sed
 
 # Install Taskfile
 RUN sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 
-# Update NSS config
-RUN sed -i -E -e 's/^((passwd|group|shadow|gshadow):.*)/\1 oauth/' /etc/nsswitch.conf
+# TODO: Update the SSH config
 
-# Update PAM config
-RUN sed -i -E -e 's/auth	\[success=1 default=ignore\]	pam_unix\.so nullok/auth	[success=2 default=ignore]	pam_unix.so nullok\nauth	[success=1 default=ignore]	pam_oauth.so/' /etc/pam.d/common-auth
+# Setup an SSH key
+RUN mkdir -p /home/vscode/.ssh
+RUN ssh-keygen -a 100 -t ed25519 -f /home/vscode/.ssh/id_ed25519_non_default -N ""
+RUN cat /home/vscode/.ssh/id_ed25519_non_default.pub > /home/vscode/.ssh/authorized_keys
+RUN chown vscode:vscode -R /home/vscode/.ssh
+
+# Fix directory creation bug
+RUN service ssh start && service ssh stop

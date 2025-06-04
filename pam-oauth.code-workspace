@@ -3,8 +3,8 @@
     "recommendations": [
       "bierner.github-markdown-preview",
       "esbenp.prettier-vscode",
+      "ms-vscode.cpptools",
       "rust-lang.rust-analyzer",
-      "vadimcn.vscode-lldb",
       "zxh404.vscode-proto3"
     ]
   },
@@ -12,24 +12,53 @@
     {
       "name": "root",
       "path": "."
-    },
-    {
-      "name": "login",
-      "path": "crates/login"
-    },
-    {
-      "name": "nss",
-      "path": "crates/nss"
-    },
-    {
-      "name": "pam",
-      "path": "crates/pam"
-    },
-    {
-      "name": "server",
-      "path": "crates/server"
     }
   ],
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Configure (Cleanup)",
+        "presentation": {
+          "hidden": false,
+          "group": "Client Utils",
+          "order": 1
+        },
+        "type": "lldb",
+        "sourceLanguages": [
+          "rust"
+        ],
+        "request": "launch",
+        "program": "${workspaceFolder:root}/target/debug/pam-oauth-client-utils",
+        "args": [
+          "configure",
+          "cleanup"
+        ],
+        "cwd": "${workspaceFolder:root}",
+        "preLaunchTask": "Link Libraries"
+      },
+      {
+        "name": "Configure (Setup)",
+        "presentation": {
+          "hidden": false,
+          "group": "Client Utils",
+          "order": 1
+        },
+        "type": "lldb",
+        "sourceLanguages": [
+          "rust"
+        ],
+        "request": "launch",
+        "program": "${workspaceFolder:root}/target/debug/pam-oauth-client-utils",
+        "args": [
+          "configure",
+          "setup"
+        ],
+        "cwd": "${workspaceFolder:root}",
+        "preLaunchTask": "Link Libraries"
+      }
+    ]
+  },
   "settings": {
     "editor.formatOnSave": true,
     "editor.formatOnSaveMode": "file",
@@ -37,8 +66,35 @@
       "source.fixAll": "always",
       "source.organizeImports": "always"
     },
+    "rust-analyzer.debug.engine": "vadimcn.vscode-lldb",
+    "rust-analyzer.debug.engineSettings": {
+      "lldb": {
+        "sourceLanguages": [
+          "rust"
+        ]
+      }
+    },
+    "rust-analyzer.testExplorer": true,
     "[markdown]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Link Libraries",
+        "command": "task link-lib",
+        "type": "shell",
+        "args": [],
+        "problemMatcher": [
+          "$tsc"
+        ],
+        "presentation": {
+          "reveal": "always"
+        },
+        "group": "build"
+      }
+    ]
   }
 }

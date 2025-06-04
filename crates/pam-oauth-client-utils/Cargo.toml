@@ -1,0 +1,17 @@
+[package]
+name = "pam-oauth-client-utils"
+version.workspace = true
+publish.workspace = true
+authors.workspace = true
+edition.workspace = true
+description.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "pam-oauth-client-utils"
+
+[dependencies]
+clap = { workspace = true }
+regex = { workspace = true }
+rstest = { workspace = true }

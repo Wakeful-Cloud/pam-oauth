@@ -1,0 +1,23 @@
+[package]
+name = "pam-oauth-pam"
+version.workspace = true
+publish.workspace = true
+authors.workspace = true
+edition.workspace = true
+description.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[lib]
+name = "pam_oauth"
+crate-type = ["cdylib"]
+
+[dependencies]
+clap = { workspace = true }
+pam-bindings = "0.1.1"
+prost = { workspace = true }
+serde = { workspace = true }
+tonic = { workspace = true }
+
+[build-dependencies]
+tonic-build = { workspace = true }

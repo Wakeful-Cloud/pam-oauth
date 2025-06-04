@@ -27,7 +27,7 @@ The easiest way to understand the architecture of this project is to walk throug
    1. The PAM OAuth server (on `pam-oauth.example.com`) initiates an OAuth2/OIDC authorization code flow, redirecting the user to the configured identity provider.
    2. The user authenticates with the identity provider.
    3. The identity provider redirects the user back to the PAM OAuth server (on `pam-oauth.example.com`).
-   4. The PAM OAuth server (on `pam-oauth.example.com`) exchanges the authorization code for an access token, validates the OAuth ID token (if configured to do so), runs the hook script (to map the OAuth tokens to the format expected by the PAM OAuth server), and notifies the PAM OAuth PAM module (on `prod.example.com`) that the user has authenticated.
+   4. The PAM OAuth server (on `pam-oauth.example.com`) exchanges the authorization code for an access token, validates the OAuth ID token (if configured to do so), runs the hook expression (to map the OAuth tokens to the format expected by the PAM OAuth server), and notifies the PAM OAuth PAM module (on `prod.example.com`) that the user has authenticated.
 3. The PAM OAuth PAM module (on `prod.example.com`) allows the user to pass.
    1. If the PAM OAuth NSS module (on `prod.example.com`) returned a stub account to the PAM stack (as opposed to a normal account on `prod.example.com` in step 1), the PAM OAuth login shell (on `prod.example.com`) will run (instead of a normal login shell).
    2. The PAM OAuth login shell (on `prod.example.com`) will create the user's account on `prod.example.com` and execute the user's actual login shell.
@@ -41,10 +41,13 @@ The easiest way to understand the architecture of this project is to walk throug
 
 - `api/`: Shared gRPC API definitions
 - `creates/`: Rust crates
-  - `login/`: Login shell (Client)
-  - `server/`: Server (Server)
-  - `pam/`: PAM module (Client)
-  - `nss/`: NSS module (Client)
+  - `pam-oauth-common/`: Common code
+  - `pam-oauth-client-utils/`: Client utilities (Client)
+  - `pam-oauth-login/`: Login shell (Client)
+  - `pam-oauth-pam/`: PAM module (Client)
+  - `pam-oauth-nss/`: NSS module (Client)
+  - `pam-oauth-server/`: Server (Server)
+  - `pam-oauth-server-utils/`: Server utilities (Server)
 - `pkg/`: Package scripts, configurations, and other resources
   - `init/`: Systemd service files
   - `scripts/`: Post-installation/pre-removal scripts
@@ -54,20 +57,40 @@ The easiest way to understand the architecture of this project is to walk throug
 ### Development
 
 1. Start the [Devcontainer](https://containers.dev) ([`.devcontainer`](.devcontainer))
-2. Build everything:
+2. Build and link everything:
 
    ```shell
-   task build
+   # If you skip this step, PAM will silently fail to load the module
+   task link-lib
    ```
 
-3. Start the server:
+3. Start the PAM OAuth server:
 
    ```shell
    # TODO
    ```
 
-4. Attempt to authenticate:
+4. Test with `pamtester`:
 
-   ```shell
-   pamtester login $USER authenticate
-   ```
+   1. Attempt to authenticate:
+
+      ```shell
+      pamtester login vscode authenticate
+      ```
+
+5. Test with `ssh`:
+
+   1. Start the SSH server:
+
+      ```shell
+      sudo /usr/sbin/sshd -D
+      # Or sudo /usr/sbin/sshd -D -d for more verbose output
+      ```
+
+   2. Attempt to authenticate:
+
+      ```shell
+      ssh vscode@localhost
+      # Or ssh -vvv vscode@localhost for more verbose output
+      # Or ssh -i ~/.ssh/id_ed25519_non_default vscode@localhost to use the key
+      ```
