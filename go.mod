@@ -10,7 +10,7 @@ require (
 	github.com/drewstinnett/gout/v2 v2.3.0
 	github.com/erni27/imcache v1.2.1
 	github.com/expr-lang/expr v1.17.5
-	github.com/golang-jwt/jwt/v5 v5.2.2
+	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2
 	github.com/hashicorp/go-version v1.7.0
 	github.com/labstack/echo/v4 v4.13.4
