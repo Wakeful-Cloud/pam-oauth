@@ -15,7 +15,7 @@ jobs:
         run: sudo apt install -y libpam0g libpam0g-dev gcc-aarch64-linux-gnu
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: recursive
 
