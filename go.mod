@@ -5,7 +5,7 @@ go 1.24.0
 toolchain go1.24.1
 
 require (
-	github.com/coreos/go-oidc/v3 v3.16.0
+	github.com/coreos/go-oidc/v3 v3.17.0
 	github.com/drewstinnett/gout-cobra v0.2.0
 	github.com/drewstinnett/gout/v2 v2.3.0
 	github.com/erni27/imcache v1.2.1
