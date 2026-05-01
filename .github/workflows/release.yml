@@ -38,6 +38,6 @@ jobs:
         run: task package CC="aarch64-linux-gnu-gcc" GOARCH="arm64" GOOS="linux" MULTIARCH_TRIPLET="aarch64-linux-gnu"
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: ./dist/pkg/*
